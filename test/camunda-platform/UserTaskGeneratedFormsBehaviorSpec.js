@@ -66,7 +66,25 @@ describe('camunda-platform/features/modeling - UserTaskGeneratedFormsBehavior', 
 
   describe('updating camunda:FormField#id', function() {
 
-    it('should update camunda:FormData#businessKey', inject(function(elementRegistry, modeling) {
+    it('should update camunda:FormData#businessKey (id)', inject(function(elementRegistry, modeling) {
+
+      // when
+      const element = elementRegistry.get('StartEvent_1');
+
+      const formData = getFormData(element),
+            formField = getFormField(element);
+
+      // when
+      modeling.updateModdleProperties(element, formField, {
+        id: 'Foo'
+      });
+
+      // then
+      expect(formData.get('camunda:businessKey')).to.equal('Foo');
+    }));
+
+
+    it('should update camunda:FormData#businessKey (camunda:id)', inject(function(elementRegistry, modeling) {
 
       // when
       const element = elementRegistry.get('StartEvent_1');
