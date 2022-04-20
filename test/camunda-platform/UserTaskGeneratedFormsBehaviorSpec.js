@@ -26,7 +26,22 @@ describe('camunda-platform/features/modeling - UserTaskGeneratedFormsBehavior', 
 
         describe('camunda:FormField#values', function() {
 
-          it('should delete camunda:FormField#values', inject(function(elementRegistry, modeling) {
+          it('should delete camunda:FormField#values (type)', inject(function(elementRegistry, modeling) {
+
+            // when
+            const element = elementRegistry.get(`${ prefix }_1`);
+
+            const businessObject = getFormField(element);
+
+            // when
+            modeling.updateModdleProperties(element, businessObject, { type: 'boolean' });
+
+            // then
+            expect(businessObject.get('camunda:values')).to.be.empty;
+          }));
+
+
+          it('should delete camunda:FormField#values (camunda:type)', inject(function(elementRegistry, modeling) {
 
             // when
             const element = elementRegistry.get(`${ prefix }_1`);
