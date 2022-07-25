@@ -99,6 +99,27 @@ describe('camunda-platform/features/modeling - UserTaskGeneratedFormsBehavior', 
     }));
 
 
+    it('should NOT update camunda:FormData#businessKey (empty id)', inject(function(elementRegistry, modeling) {
+
+      // when
+      const element = elementRegistry.get('StartEvent_noBusinessKey');
+
+      const formData = getFormData(element),
+            formField = getFormField(element);
+
+      // assume
+      expect(formData.get('camunda:businessKey')).to.not.exist;
+
+      // when
+      modeling.updateModdleProperties(element, formField, {
+        id: 'Foo'
+      });
+
+      // then
+      expect(formData.get('camunda:businessKey')).to.not.exist;
+    }));
+
+
     it('should update camunda:FormData#businessKey (camunda:id)', inject(function(elementRegistry, modeling) {
 
       // when
@@ -114,6 +135,27 @@ describe('camunda-platform/features/modeling - UserTaskGeneratedFormsBehavior', 
 
       // then
       expect(formData.get('camunda:businessKey')).to.equal('Foo');
+    }));
+
+
+    it('should NOT update camunda:FormData#businessKey (empty camunda:id)', inject(function(elementRegistry, modeling) {
+
+      // when
+      const element = elementRegistry.get('StartEvent_noBusinessKey');
+
+      const formData = getFormData(element),
+            formField = getFormField(element);
+
+      // assume
+      expect(formData.get('camunda:businessKey')).to.not.exist;
+
+      // when
+      modeling.updateModdleProperties(element, formField, {
+        'camunda:id': 'Foo'
+      });
+
+      // then
+      expect(formData.get('camunda:businessKey')).to.not.exist;
     }));
 
   });
