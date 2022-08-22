@@ -1,5 +1,4 @@
 import camundaModdle from 'camunda-bpmn-moddle/resources/camunda.json';
-import camundaModdleExtension from 'camunda-bpmn-moddle/lib';
 
 import zeebeModdle from 'zeebe-bpmn-moddle/resources/zeebe.json';
 import zeebeModdleExtension from 'zeebe-bpmn-moddle/lib';
@@ -39,7 +38,6 @@ export function bootstrapCamundaPlatformModeler(diagram, options = {}) {
 
   return bootstrapModeler(diagram, {
     additionalModules: [
-      camundaModdleExtension,
       ...defaultCamundaPlatformAdditionalModules,
       ...additionalModules
     ],
