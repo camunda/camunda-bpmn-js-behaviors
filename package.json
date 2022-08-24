@@ -65,12 +65,12 @@
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
     "webpack": "^5.20.1",
-    "zeebe-bpmn-moddle": "^0.12.1"
+    "zeebe-bpmn-moddle": "^0.14.0"
   },
   "peerDependencies": {
     "bpmn-js": "9.x",
     "camunda-bpmn-moddle": "6.x",
-    "zeebe-bpmn-moddle": "0.12.x"
+    "zeebe-bpmn-moddle": "0.12.x | 0.13.x | 0.14.x"
   },
   "files": [
     "lib"
