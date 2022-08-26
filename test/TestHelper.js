@@ -1,7 +1,6 @@
 import camundaModdle from 'camunda-bpmn-moddle/resources/camunda.json';
 
 import zeebeModdle from 'zeebe-bpmn-moddle/resources/zeebe.json';
-import zeebeModdleExtension from 'zeebe-bpmn-moddle/lib';
 
 export * from 'bpmn-js/test/helper';
 
@@ -23,7 +22,6 @@ export function bootstrapCamundaCloudModeler(diagram, options = {}) {
 
   return bootstrapModeler(diagram, {
     additionalModules: [
-      zeebeModdleExtension,
       ...defaultCamundaCloudAdditionalModules,
       ...additionalModules
     ],
