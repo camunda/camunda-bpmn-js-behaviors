@@ -10,7 +10,7 @@ import {
 import diagramXML from './camunda-initiator.bpmn';
 
 
-describe('browser - RemoveInitiatorBehaviour', function() {
+describe('RemoveInitiatorBehaviour', function() {
 
   beforeEach(bootstrapCamundaPlatformModeler(diagramXML));
 
@@ -19,16 +19,12 @@ describe('browser - RemoveInitiatorBehaviour', function() {
 
     describe('when event is moved to subprocess', function() {
 
-      var startEvent,
-          startBusinessObject,
-          subProcess;
-
       it('should not have an initiator property', inject(function(elementRegistry, modeling) {
 
         // given
-        startEvent = elementRegistry.get('StartEvent_1');
-        subProcess = elementRegistry.get('Activity_subprocess1');
-        startBusinessObject = getBusinessObject(startEvent);
+        const startEvent = elementRegistry.get('StartEvent_1'),
+              startBusinessObject = getBusinessObject(startEvent),
+              subProcess = elementRegistry.get('Activity_subprocess1');
 
         // assume
         expect(startBusinessObject.get('camunda:initiator')).to.not.be.undefined;
@@ -38,7 +34,6 @@ describe('browser - RemoveInitiatorBehaviour', function() {
 
         // then
         expect(startBusinessObject.get('camunda:initiator')).to.be.undefined;
-
       }));
 
     });
@@ -46,21 +41,17 @@ describe('browser - RemoveInitiatorBehaviour', function() {
 
     describe('when event is created within a subprocess', function() {
 
-      var startBusinessObject,
-          subProcess;
-
       it('should not have an initiator property', inject(function(elementRegistry, modeling, bpmnFactory) {
 
         // given
-        subProcess = elementRegistry.get('Activity_subprocess1');
-        startBusinessObject = bpmnFactory.create('bpmn:StartEvent', { initiator:'abc' });
+        const subProcess = elementRegistry.get('Activity_subprocess1'),
+              startBusinessObject = bpmnFactory.create('bpmn:StartEvent', { initiator:'abc' });
 
         // when
         modeling.createShape({ type: 'bpmn:StartEvent', businessObject:startBusinessObject }, { x: 0, y: 0 }, subProcess);
 
         // then
         expect(startBusinessObject.get('camunda:initiator')).to.be.undefined;
-
       }));
 
     });
@@ -68,16 +59,12 @@ describe('browser - RemoveInitiatorBehaviour', function() {
 
     describe('when event with property and subprocess as parent is moved', function() {
 
-      var startEvent,
-          startBusinessObject,
-          subProcess;
-
       it('should not have an initiator property', inject(function(elementRegistry, modeling, elementFactory, canvas, copyPaste) {
 
         // given
-        startEvent = elementRegistry.get('StartEvent_2');
-        subProcess = elementRegistry.get('Activity_subprocess1');
-        startBusinessObject = getBusinessObject(startEvent);
+        const startEvent = elementRegistry.get('StartEvent_2'),
+              startBusinessObject = getBusinessObject(startEvent),
+              subProcess = elementRegistry.get('Activity_subprocess1');
 
         // assume
         expect(startBusinessObject.get('camunda:initiator')).to.not.be.undefined;
@@ -87,11 +74,9 @@ describe('browser - RemoveInitiatorBehaviour', function() {
 
         // then
         expect(startBusinessObject.get('camunda:initiator')).to.be.undefined;
-
       }));
 
     });
-
 
   });
 
