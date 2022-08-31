@@ -41,7 +41,7 @@
     "babel-loader": "^8.2.5",
     "babel-plugin-istanbul": "^6.1.1",
     "bpmn-js": "^9.4.0",
-    "camunda-bpmn-moddle": "^6.1.2",
+    "camunda-bpmn-moddle": "^7.0.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.22.0",
@@ -66,12 +66,12 @@
     "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0",
     "webpack": "^5.74.0",
-    "zeebe-bpmn-moddle": "^0.14.0"
+    "zeebe-bpmn-moddle": "^0.15.0"
   },
   "peerDependencies": {
     "bpmn-js": "9.x",
-    "camunda-bpmn-moddle": "6.x",
-    "zeebe-bpmn-moddle": "0.12.x | 0.13.x | 0.14.x"
+    "camunda-bpmn-moddle": "7.x",
+    "zeebe-bpmn-moddle": "0.15.x"
   },
   "files": [
     "lib"
