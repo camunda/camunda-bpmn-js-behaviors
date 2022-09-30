@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.2.2
+
+* `DEPS` update to `min-dash@4`
+
 ## 0.2.1
 
 * `DEPS`: support `bpmn-js@10`
