@@ -69,9 +69,9 @@
     "zeebe-bpmn-moddle": "^0.15.0"
   },
   "peerDependencies": {
-    "bpmn-js": "9.x || 10.x",
-    "camunda-bpmn-moddle": "7.x",
-    "zeebe-bpmn-moddle": "0.15.x"
+    "bpmn-js": ">= 9",
+    "camunda-bpmn-moddle": ">= 7",
+    "zeebe-bpmn-moddle": ">= 0.15"
   },
   "files": [
     "lib"
