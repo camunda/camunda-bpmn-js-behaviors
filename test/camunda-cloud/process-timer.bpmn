@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_148ykk6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.4.1">
+  <bpmn:process id="Process" isExecutable="true">
+    <bpmn:subProcess id="EventSubProcess" name="EventSubProcess" triggeredByEvent="true" />
+    <bpmn:startEvent id="StartEventCycle" name="StartEventCycle">
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0i16cpv">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression" />
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_1fciphi" />
+    <bpmn:boundaryEvent id="NonInterruptingBoundaryEvent" name="NonInterruptingBoundaryEvent" cancelActivity="false" attachedToRef="Activity_1fciphi">
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0ld56e4">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression" />
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">
+      <bpmndi:BPMNShape id="Event_1ip61ay_di" bpmnElement="StartEventCycle">
+        <dc:Bounds x="200" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="181" y="145" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fciphi_di" bpmnElement="Activity_1fciphi">
+        <dc:Bounds x="320" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00mfr14_di" bpmnElement="EventSubProcess" isExpanded="true">
+        <dc:Bounds x="160" y="230" width="350" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0635zgx_di" bpmnElement="NonInterruptingBoundaryEvent">
+        <dc:Bounds x="402" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="382" y="185" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
