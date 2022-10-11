@@ -785,6 +785,152 @@ describe('CopyPasteBehavior', function() {
 
   });
 
+
+  describe('bpmn:TimerEventDefinition', function() {
+
+    it('should allow to copy-paste time cycle within process', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            startEvent = moddle.create('bpmn:StartEvent'),
+            process = moddle.create('bpmn:Process'),
+            timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+      startEvent.$parent = process;
+      startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = startEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should allow to copy-paste time date within process', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            startEvent = moddle.create('bpmn:StartEvent'),
+            process = moddle.create('bpmn:Process'),
+            timeDate = moddle.create('bpmn:FormalExpression', { body: '=today()' });
+
+      startEvent.$parent = process;
+      startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = startEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should allow to copy-paste time duration within process', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            event = moddle.create('bpmn:IntermediateCatchEvent'),
+            process = moddle.create('bpmn:Process'),
+            timeDuration = moddle.create('bpmn:FormalExpression', { body: 'PT1H' });
+
+      event.$parent = process;
+      event.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = event;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should allow to copy-paste time cycle of non-interrupting timer boundary event', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            boundaryEvent = moddle.create('bpmn:BoundaryEvent', { cancelActivity: false }),
+            timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+      boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = boundaryEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should NOT allow to copy-paste time cycle to interrupting timer of event subprocess', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            startEvent = moddle.create('bpmn:StartEvent'),
+            eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
+            timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+      startEvent.$parent = eventSubProcess;
+      startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = startEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+      // then
+      expect(canCopyProperty).to.be.false;
+    });
+
+
+    it('should NOT allow to copy-paste time duration to non-interrupting timer of event subprocess', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            startEvent = moddle.create('bpmn:StartEvent', { isInterrupting: false }),
+            eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
+            timeDuration = moddle.create('bpmn:FormalExpression', { body: 'PT1H' });
+
+      startEvent.$parent = eventSubProcess;
+      startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = startEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+      // then
+      expect(canCopyProperty).to.be.false;
+    });
+
+
+    it('should NOT allow to copy-paste time date to intermediate timer catch event', function() {
+
+      // given
+      const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+            event = moddle.create('bpmn:IntermediateCatchEvent'),
+            timeDate = moddle.create('bpmn:FormalExpression', { body: '=today()' });
+
+      event.set('eventDefinitions', [ timerEventDefinition ]);
+
+      timerEventDefinition.$parent = event;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+      // then
+      expect(canCopyProperty).to.be.false;
+    });
+  });
+
 });
 
 
