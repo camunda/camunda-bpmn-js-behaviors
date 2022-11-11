@@ -135,6 +135,65 @@ describe('camunda-cloud/features/modeling - RemoveAssignmentDefinitionBehavior',
     });
 
 
+    describe('removing zeebe:AssignmentDefinition when candidateUsers is set to undefined', function() {
+
+      let element;
+
+      beforeEach(inject(function(commandStack, elementRegistry) {
+
+        // given
+        element = elementRegistry.get('UserTask_7');
+
+        const assignmentDefinition = getAssignmentDefinition(element);
+
+        // when
+        commandStack.execute('element.updateModdleProperties', {
+          element,
+          moddleElement: assignmentDefinition,
+          properties: {
+            candidateUsers: undefined
+          }
+        });
+      }));
+
+
+      it('should execute', inject(function() {
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).not.to.exist;
+      }));
+
+
+      it('should undo', inject(function(commandStack) {
+
+        // when
+        commandStack.undo();
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).to.exist;
+        expect(assignmentDefintion.candidateUsers).to.equal('myCandidateUsers');
+      }));
+
+
+      it('should undo/redo', inject(function(commandStack) {
+
+        // when
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).not.to.exist;
+      }));
+
+    });
+
+
     describe('NOT removing zeebe:AssignmentDefinition', function() {
 
       let element;
@@ -264,6 +323,61 @@ describe('camunda-cloud/features/modeling - RemoveAssignmentDefinitionBehavior',
 
         expect(assignmentDefintion).to.exist;
         expect(assignmentDefintion.candidateGroups).to.equal('myCandidateGroups');
+      }));
+
+
+      it('should undo/redo', inject(function(commandStack) {
+
+        // when
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).not.to.exist;
+      }));
+
+    });
+
+
+    describe('removing zeebe:AssignmentDefinition when candidateUsers is set to undefined', function() {
+
+      let element;
+
+      beforeEach(inject(function(commandStack, elementRegistry, modeling) {
+
+        // given
+        element = elementRegistry.get('UserTask_7');
+
+        const assignmentDefinition = getAssignmentDefinition(element);
+
+        // when
+        modeling.updateModdleProperties(element, assignmentDefinition, {
+          candidateUsers: undefined
+        });
+      }));
+
+
+      it('should execute', inject(function() {
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).not.to.exist;
+      }));
+
+
+      it('should undo', inject(function(commandStack) {
+
+        // when
+        commandStack.undo();
+
+        // then
+        const assignmentDefintion = getAssignmentDefinition(element);
+
+        expect(assignmentDefintion).to.exist;
+        expect(assignmentDefintion.candidateUsers).to.equal('myCandidateUsers');
       }));
 
 
