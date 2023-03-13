@@ -71,7 +71,7 @@
   "peerDependencies": {
     "bpmn-js": ">= 9",
     "camunda-bpmn-moddle": ">= 7",
-    "zeebe-bpmn-moddle": ">= 0.15"
+    "zeebe-bpmn-moddle": ">= 0.18"
   },
   "files": [
     "lib"
