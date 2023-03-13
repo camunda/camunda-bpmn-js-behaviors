@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1mcvv1o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.5.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1mcvv1o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.8.0-rc.0">
   <bpmn:process id="Process_1" isExecutable="true">
     <bpmn:extensionElements>
       <zeebe:userTaskForm id="UserTaskForm_1">{ components: [ { label: "field", key: "field" } ] }</zeebe:userTaskForm>
       <zeebe:userTaskForm id="UserTaskForm_2">{ components: [ { label: "anotherField", key: "field" } ] }</zeebe:userTaskForm>
     </bpmn:extensionElements>
-    <bpmn:userTask id="UserTask_1">
+    <bpmn:userTask id="UserTask_1" name="UserTask_1">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_1" />
       </bpmn:extensionElements>
     </bpmn:userTask>
-    <bpmn:userTask id="UserTask_2">
+    <bpmn:userTask id="UserTask_2" name="UserTask_2">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_2" />
       </bpmn:extensionElements>
@@ -43,30 +43,86 @@
         <zeebe:assignmentDefinition candidateUsers="myCandidateUsers" />
       </bpmn:extensionElements>
     </bpmn:userTask>
+    <bpmn:userTask id="UserTask_8" name="UserTask_8">
+      <bpmn:extensionElements>
+        <zeebe:taskSchedule dueDate="=dueDate" followUpDate="=followUpDate" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_9" name="UserTask_9">
+      <bpmn:extensionElements>
+        <zeebe:taskSchedule dueDate="=dueDate" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_10" name="UserTask_10">
+      <bpmn:extensionElements>
+        <zeebe:taskSchedule followUpDate="=followUpDate" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:group id="Group_1iij674" categoryValueRef="CategoryValue_1ls7csf" />
+    <bpmn:group id="Group_03ciaww" categoryValueRef="CategoryValue_1e18h7j" />
+    <bpmn:group id="Group_0pfvk8p" categoryValueRef="CategoryValue_1efmoxk" />
   </bpmn:process>
+  <bpmn:category id="Category_0n5sj65">
+    <bpmn:categoryValue id="CategoryValue_1ls7csf" value="Form Definition" />
+  </bpmn:category>
+  <bpmn:category id="Category_1ap12y8">
+    <bpmn:categoryValue id="CategoryValue_1e18h7j" value="Assignment Definition" />
+  </bpmn:category>
+  <bpmn:category id="Category_1ald8rv">
+    <bpmn:categoryValue id="CategoryValue_1efmoxk" value="Task Schedule" />
+  </bpmn:category>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNShape id="UserTask_1_di" bpmnElement="UserTask_1">
-        <dc:Bounds x="160" y="80" width="100" height="80" />
+        <dc:Bounds x="190" y="150" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="UserTask_2_di" bpmnElement="UserTask_2">
-        <dc:Bounds x="160" y="170" width="100" height="80" />
+        <dc:Bounds x="190" y="240" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0x9faqw_di" bpmnElement="UserTask_3">
-        <dc:Bounds x="270" y="80" width="100" height="80" />
+        <dc:Bounds x="370" y="150" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0gfzr06_di" bpmnElement="UserTask_4">
-        <dc:Bounds x="270" y="170" width="100" height="80" />
+        <dc:Bounds x="370" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_18hunzl_di" bpmnElement="UserTask_5">
-        <dc:Bounds x="380" y="80" width="100" height="80" />
+        <dc:Bounds x="480" y="150" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_17cm5m1_di" bpmnElement="UserTask_6">
-        <dc:Bounds x="380" y="170" width="100" height="80" />
+        <dc:Bounds x="480" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0q1c7d6_di" bpmnElement="UserTask_7">
-        <dc:Bounds x="490" y="80" width="100" height="80" />
+        <dc:Bounds x="590" y="150" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19oqrxe_di" bpmnElement="UserTask_8">
+        <dc:Bounds x="770" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_133vs8r_di" bpmnElement="UserTask_9">
+        <dc:Bounds x="880" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jt9scz_di" bpmnElement="UserTask_10">
+        <dc:Bounds x="990" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_1iij674_di" bpmnElement="Group_1iij674">
+        <dc:Bounds x="160" y="80" width="160" height="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="203" y="87" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_03ciaww_di" bpmnElement="Group_03ciaww">
+        <dc:Bounds x="340" y="80" width="380" height="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="87" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_0pfvk8p_di" bpmnElement="Group_0pfvk8p">
+        <dc:Bounds x="740" y="80" width="380" height="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="894" y="87" width="73" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
