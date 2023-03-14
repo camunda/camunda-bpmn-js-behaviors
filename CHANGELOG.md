@@ -6,9 +6,13 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.5.0
+
+* `FEAT`: remove empty `zeebe:TaskSchedule` extension elements ([#34](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/34))
+
 ## 0.4.0
 
-`FEAT`: do not remove assignment if `zeebe:candidateUsers` set ([#20](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/20))
+* `FEAT`: do not remove assignment if `zeebe:candidateUsers` set ([#20](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/20))
 
 ## 0.3.0
 
