@@ -3,7 +3,7 @@ import {
   inject
 } from 'test/TestHelper';
 
-import { isTypeSupported as isTimerExpressionTypeSupported } from '../../../lib/camunda-cloud/util/TimerUtil';
+import { isTimerExpressionTypeSupported } from '../../../lib/camunda-cloud/util/TimerUtil';
 
 import diagramXML from './TimerUtil.bpmn';
 
