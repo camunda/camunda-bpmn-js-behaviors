@@ -19,7 +19,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:CalledElement>', function() {
+  describe('zeebe:CalledElement', function() {
 
     it('should allow on CallActivity', function() {
 
@@ -57,7 +57,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:LoopCharacteristics>', function() {
+  describe('zeebe:LoopCharacteristics', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -169,7 +169,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:Input>', function() {
+  describe('zeebe:Input', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -288,7 +288,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:Output>', function() {
+  describe('zeebe:Output', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -428,7 +428,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:IoMapping>', function() {
+  describe('zeebe:IoMapping', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -551,7 +551,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:TaskHeaders>', function() {
+  describe('zeebe:TaskHeaders', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -691,7 +691,7 @@ describe('CopyPasteBehavior', function() {
   });
 
 
-  describe('<zeebe:TaskDefinition>', function() {
+  describe('zeebe:TaskDefinition', function() {
 
     it('should allow on ServiceTask', function() {
 
@@ -929,6 +929,7 @@ describe('CopyPasteBehavior', function() {
       // then
       expect(canCopyProperty).to.be.false;
     });
+
   });
 
 });
