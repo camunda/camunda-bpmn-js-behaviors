@@ -119,7 +119,9 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
         expect(timerEventDefinition.get('timeCycle')).not.to.exist;
       }
     ));
+
   });
+
 });
 
 
