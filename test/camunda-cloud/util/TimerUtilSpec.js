@@ -22,21 +22,21 @@ describe('camunda-cloud/util - TimerUtil', function() {
 
   expectTimerExpressionTypesSupported('timer intermediate catch event', 'TimerIntermediateCatchEvent_1', {
     timeCycle: false,
-    timeDate: false,
+    timeDate: true,
     timeDuration: true
   });
 
 
   expectTimerExpressionTypesSupported('non-interrupting timer boundary event', 'NonInterruptingTimerBoundaryEvent_1', {
     timeCycle: true,
-    timeDate: false,
+    timeDate: true,
     timeDuration: true
   });
 
 
   expectTimerExpressionTypesSupported('timer boundary event', 'TimerBoundaryEvent_1', {
     timeCycle: false,
-    timeDate: false,
+    timeDate: true,
     timeDuration: true
   });
 

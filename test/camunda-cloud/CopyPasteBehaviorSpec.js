@@ -875,25 +875,6 @@ describe('CopyPasteBehavior', function() {
         expect(canCopyProperty).not.to.be.false;
       });
 
-
-      it('should NOT allow to copy-paste time date to intermediate timer catch event', function() {
-
-        // given
-        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
-              event = moddle.create('bpmn:IntermediateCatchEvent'),
-              timeDate = moddle.create('bpmn:FormalExpression', { body: '=today()' });
-
-        event.set('eventDefinitions', [ timerEventDefinition ]);
-
-        timerEventDefinition.$parent = event;
-
-        // when
-        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
-
-        // then
-        expect(canCopyProperty).to.be.false;
-      });
-
     });
 
 
