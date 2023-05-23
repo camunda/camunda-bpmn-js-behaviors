@@ -44,14 +44,14 @@ describe('camunda-cloud/util - TimerUtil', function() {
   expectTimerExpressionTypesSupported('non-interrupting timer start event (event sub-process)', 'NonInterruptingTimerStartEvent_1', {
     timeCycle: true,
     timeDate: true,
-    timeDuration: false
+    timeDuration: true
   });
 
 
   expectTimerExpressionTypesSupported('timer start event (event sub-process)', 'TimerStartEvent_2', {
     timeCycle: false,
     timeDate: true,
-    timeDuration: false
+    timeDuration: true
   });
 
 });
