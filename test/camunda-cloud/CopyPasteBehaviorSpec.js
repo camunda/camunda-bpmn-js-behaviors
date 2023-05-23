@@ -901,7 +901,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should NOT allow to copy-paste time duration to non-interrupting timer of event subprocess', function() {
+      it('should allow to copy-paste time duration to non-interrupting timer of event subprocess', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -918,7 +918,7 @@ describe('CopyPasteBehavior', function() {
         const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
 
         // then
-        expect(canCopyProperty).to.be.false;
+        expect(canCopyProperty).not.to.be.false;
       });
 
     });
