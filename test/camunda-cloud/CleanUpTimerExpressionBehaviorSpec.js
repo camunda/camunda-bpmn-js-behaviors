@@ -126,10 +126,12 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
 
 
 
-// helper //////////////
+// helpers //////////
 
 function getTimerEventDefinition(element) {
-  const bo = getBusinessObject(element);
+  const businessObject = getBusinessObject(element);
 
-  return bo.eventDefinitions.find(def => is(def, 'bpmn:TimerEventDefinition'));
+  return businessObject.get('eventDefinitions').find(eventDefinition => {
+    return is(eventDefinition, 'bpmn:TimerEventDefinition');
+  });
 }
