@@ -790,7 +790,64 @@ describe('CopyPasteBehavior', function() {
 
     describe('timeCycle', function() {
 
-      it('should allow to copy-paste time cycle of non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              startEvent = moddle.create('bpmn:StartEvent'),
+              timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+        startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = startEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should NOT allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              intermediateCatchEvent = moddle.create('bpmn:IntermediateCatchEvent'),
+              timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+        intermediateCatchEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = intermediateCatchEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+        // then
+        expect(canCopyProperty).to.be.false;
+      });
+
+
+      it('should NOT allow to copy to timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              boundaryEvent = moddle.create('bpmn:BoundaryEvent'),
+              timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
+
+        boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = boundaryEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeCycle, timerEventDefinition, 'timeCycle');
+
+        // then
+        expect(canCopyProperty).to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer boundary event', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -809,7 +866,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should NOT allow to copy-paste time cycle to interrupting timer of event subprocess', function() {
+      it('should NOT allow to copy to timer start event in event subprocess', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -830,15 +887,15 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy-paste time cycle within process', function() {
+      it('should allow to copy to non-interrupting timer start event in event subprocess', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
-              startEvent = moddle.create('bpmn:StartEvent'),
-              process = moddle.create('bpmn:Process'),
+              startEvent = moddle.create('bpmn:StartEvent', { isInterrupting: false }),
+              eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
               timeCycle = moddle.create('bpmn:FormalExpression', { body: 'R/PT1H' });
 
-        startEvent.$parent = process;
+        startEvent.$parent = eventSubProcess;
         startEvent.set('eventDefinitions', [ timerEventDefinition ]);
 
         timerEventDefinition.$parent = startEvent;
@@ -855,15 +912,112 @@ describe('CopyPasteBehavior', function() {
 
     describe('timeDate', function() {
 
-      it('should allow to copy-paste time date within process', function() {
+      it('should allow to copy to non-interrupting timer boundary event', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
               startEvent = moddle.create('bpmn:StartEvent'),
-              process = moddle.create('bpmn:Process'),
-              timeDate = moddle.create('bpmn:FormalExpression', { body: '=today()' });
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
 
-        startEvent.$parent = process;
+        startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = startEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              intermediateCatchEvent = moddle.create('bpmn:IntermediateCatchEvent'),
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
+
+        intermediateCatchEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = intermediateCatchEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              boundaryEvent = moddle.create('bpmn:BoundaryEvent'),
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
+
+        boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = boundaryEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              boundaryEvent = moddle.create('bpmn:BoundaryEvent', { cancelActivity: false }),
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
+
+        boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = boundaryEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to timer start event in event subprocess', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              startEvent = moddle.create('bpmn:StartEvent'),
+              eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
+
+        startEvent.$parent = eventSubProcess;
+        startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = startEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDate, timerEventDefinition, 'timeDate');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer start event in event subprocess', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              startEvent = moddle.create('bpmn:StartEvent', { isInterrupting: false }),
+              eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
+              timeDate = moddle.create('bpmn:FormalExpression', { body: '2019-10-01T12:00:00Z' });
+
+        startEvent.$parent = eventSubProcess;
         startEvent.set('eventDefinitions', [ timerEventDefinition ]);
 
         timerEventDefinition.$parent = startEvent;
@@ -880,18 +1034,35 @@ describe('CopyPasteBehavior', function() {
 
     describe('timeDuration', function() {
 
-      it('should allow to copy-paste time duration within process', function() {
+      it('should NOT allow to copy to non-interrupting timer boundary event', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
-              event = moddle.create('bpmn:IntermediateCatchEvent'),
-              process = moddle.create('bpmn:Process'),
-              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'PT1H' });
+              startEvent = moddle.create('bpmn:StartEvent'),
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
 
-        event.$parent = process;
-        event.set('eventDefinitions', [ timerEventDefinition ]);
+        startEvent.set('eventDefinitions', [ timerEventDefinition ]);
 
-        timerEventDefinition.$parent = event;
+        timerEventDefinition.$parent = startEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+        // then
+        expect(canCopyProperty).to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              intermediateCatchEvent = moddle.create('bpmn:IntermediateCatchEvent'),
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
+
+        intermediateCatchEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = intermediateCatchEvent;
 
         // when
         const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
@@ -901,13 +1072,72 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy-paste time duration to non-interrupting timer of event subprocess', function() {
+      it('should allow to copy to timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              boundaryEvent = moddle.create('bpmn:BoundaryEvent'),
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
+
+        boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = boundaryEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer boundary event', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              boundaryEvent = moddle.create('bpmn:BoundaryEvent', { cancelActivity: false }),
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
+
+        boundaryEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = boundaryEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to timer start event in event subprocess', function() {
+
+        // given
+        const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
+              startEvent = moddle.create('bpmn:StartEvent'),
+              eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
+
+        startEvent.$parent = eventSubProcess;
+        startEvent.set('eventDefinitions', [ timerEventDefinition ]);
+
+        timerEventDefinition.$parent = startEvent;
+
+        // when
+        const canCopyProperty = copyPasteBehavior.canCopyProperty(timeDuration, timerEventDefinition, 'timeDuration');
+
+        // then
+        expect(canCopyProperty).not.to.be.false;
+      });
+
+
+      it('should allow to copy to non-interrupting timer start event in event subprocess', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
               startEvent = moddle.create('bpmn:StartEvent', { isInterrupting: false }),
               eventSubProcess = moddle.create('bpmn:SubProcess', { triggeredByEvent: true }),
-              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'PT1H' });
+              timeDuration = moddle.create('bpmn:FormalExpression', { body: 'P14D' });
 
         startEvent.$parent = eventSubProcess;
         startEvent.set('eventDefinitions', [ timerEventDefinition ]);
