@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.6.0
+
+* `FEAT`: support `bpmn:timeDate` for timer boundary and intermediate catch events ([#36](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/36))
+
 ## 0.5.0
 
 * `FEAT`: remove empty `zeebe:TaskSchedule` extension elements ([#34](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/34))
