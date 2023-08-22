@@ -19,7 +19,7 @@ describe('camunda-cloud/features/modeling - CleanUpEndEventBehavior', function()
 
   describe('replace', function() {
 
-    it('should remove timeCycle when boundary event is replaced with an interrupting one', inject(
+    it('should remove output mappings when replacing end event with error end event', inject(
       function(elementRegistry, bpmnReplace) {
 
         // given
