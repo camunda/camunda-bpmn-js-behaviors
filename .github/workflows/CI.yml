@@ -33,4 +33,4 @@ jobs:
         COVERAGE: 1
       run: npm run all
     - name: Upload Coverage
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
