@@ -15,7 +15,7 @@ import {
 import diagramXML from './process-user-tasks.bpmn';
 
 
-describe('camunda-cloud/features/modeling - FormDefinitionBehavior', function() {
+describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
   beforeEach(bootstrapCamundaCloudModeler(diagramXML));
 
