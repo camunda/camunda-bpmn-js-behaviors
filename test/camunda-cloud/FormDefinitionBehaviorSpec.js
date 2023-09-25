@@ -1,3 +1,5 @@
+import { without } from 'min-dash';
+
 import {
   bootstrapCamundaCloudModeler,
   inject
@@ -20,7 +22,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
   beforeEach(bootstrapCamundaCloudModeler(diagramXML));
 
 
-  describe('cleanup user task forms', function() {
+  describe('remove user task form', function() {
 
     describe('on remove user task', function() {
 
@@ -147,10 +149,28 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
     });
 
+
+    it('should remove extension elements', inject(function(canvas, elementRegistry, modeling) {
+
+      // given
+      const rootElement = canvas.getRootElement();
+
+      const userTask1 = elementRegistry.get('UserTask_1'),
+            userTask2 = elementRegistry.get('UserTask_2');
+
+      // when
+      modeling.removeElements([ userTask1, userTask2 ]);
+
+      // then
+      const extensionElements = getBusinessObject(rootElement).get('extensionElements');
+
+      expect(extensionElements).not.to.exist;
+    }));
+
   });
 
 
-  describe('create new user task form', function() {
+  describe('create user task form', function() {
 
     describe('on copy user task', function() {
 
@@ -241,6 +261,190 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
         // then
         expect(userTaskForms).to.have.length(3);
+      }));
+
+    });
+
+  });
+
+
+  describe('update form definition', function() {
+
+    describe('set form ID', function() {
+
+      it('should remove custom form key', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_11');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formId: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('formKey')).not.to.exist;
+      }));
+
+
+      it('should remove user task form', inject(function(canvas, elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formId: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('formKey')).not.to.exist;
+
+        const rootElement = canvas.getRootElement();
+
+        const userTaskForms = getUserTaskForms(rootElement);
+
+        expect(hasUsertaskForm('UserTaskForm_1', userTaskForms)).to.be.false;
+      }));
+
+
+      it('should remove extension elements', inject(function(canvas, elementRegistry, modeling) {
+
+        // given
+        const userTask1 = elementRegistry.get('UserTask_1'),
+              userTask2 = elementRegistry.get('UserTask_2');
+
+        modeling.removeElements([ userTask2 ]);
+
+        const formDefinition = getFormDefinition(userTask1);
+
+        // when
+        modeling.updateModdleProperties(userTask1, formDefinition, {
+          formId: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('formKey')).not.to.exist;
+
+        const rootElement = canvas.getRootElement();
+
+        const extensionElements = getBusinessObject(rootElement).get('extensionElements');
+
+        expect(extensionElements).not.to.exist;
+      }));
+
+    });
+
+
+    describe('set form key', function() {
+
+      it('should remove form ID', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formKey: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('formId')).not.to.exist;
+      }));
+
+
+      it('should remove user task form', inject(function(canvas, elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formKey: 'foobar'
+        });
+
+        // then
+        const rootElement = canvas.getRootElement();
+
+        const userTaskForms = getUserTaskForms(rootElement);
+
+        expect(hasUsertaskForm('UserTaskForm_1', userTaskForms)).to.be.false;
+      }));
+
+
+      it('should remove extension elements', inject(function(canvas, elementRegistry, modeling) {
+
+        // given
+        const userTask1 = elementRegistry.get('UserTask_1'),
+              userTask2 = elementRegistry.get('UserTask_2');
+
+        modeling.removeElements([ userTask2 ]);
+
+        const formDefinition = getFormDefinition(userTask1);
+
+        // when
+        modeling.updateModdleProperties(userTask1, formDefinition, {
+          formKey: 'foobar'
+        });
+
+        // then
+        const rootElement = canvas.getRootElement();
+
+        const extensionElements = getBusinessObject(rootElement).get('extensionElements');
+
+        expect(extensionElements).not.to.exist;
+      }));
+
+    });
+
+
+    describe('remove form definition', function() {
+
+      it('should remove user task form', inject(function(canvas, elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1'),
+              extensionElements = getBusinessObject(userTask).get('extensionElements');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, extensionElements, {
+          values: without(extensionElements.get('values'), formDefinition)
+        });
+
+        // then
+        const rootElement = canvas.getRootElement();
+
+        const userTaskForms = getUserTaskForms(rootElement);
+
+        expect(hasUsertaskForm('UserTaskForm_1', userTaskForms)).to.be.false;
+      }));
+
+
+      it('should remove extension elements', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1'),
+              extensionElements = getBusinessObject(userTask).get('extensionElements');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, extensionElements, {
+          values: without(extensionElements.get('values'), formDefinition)
+        });
+
+        // then
+        expect(getBusinessObject(userTask).get('extensionElements')).not.to.exist;
       }));
 
     });
