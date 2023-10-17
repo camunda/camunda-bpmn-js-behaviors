@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.2.1
+
+* `DEPS`: update devDependencies
+
 ## 1.2.0
 
 * `FEAT`: remove empty `zeebe:Subscription` extension elements ([#50](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/50))
