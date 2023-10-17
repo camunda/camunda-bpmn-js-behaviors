@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.2.0
+
+* `FEAT`: remove empty `zeebe:Subscription` extension elements ([#50](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/50))
+
 ## 1.1.0
 
 * `FEAT`: support linking Camunda form through `zeebe:formId` ([#49](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/49))
