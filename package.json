@@ -40,7 +40,7 @@
     "@babel/core": "^7.18.13",
     "babel-loader": "^9.0.0",
     "babel-plugin-istanbul": "^6.1.1",
-    "bpmn-js": "^14.0.0",
+    "bpmn-js": "^15.0.0",
     "camunda-bpmn-moddle": "^7.0.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.3",
