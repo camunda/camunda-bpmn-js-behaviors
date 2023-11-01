@@ -5,56 +5,110 @@ import {
 
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 
-import diagramXML from './process-executable-participant.bpmn';
+import participantXML from './process-executable-participant.bpmn';
+import emptyParticipantXML from './process-empty-participant.bpmn';
 
 
 describe('camunda-platform/features/modeling - DeleteParticipantBehaviour', function() {
 
-  beforeEach(bootstrapCamundaCloudModeler(diagramXML));
+  describe('set isExecuteable on new process after deleting last participant', function() {
 
-  describe('remove set isExecuteable on new Process', function() {
+    describe('non-empty participant', function() {
 
-    beforeEach(inject(function(elementRegistry, modeling) {
+      beforeEach(bootstrapCamundaCloudModeler(participantXML));
 
-      // given
-      const shape = elementRegistry.get('Participant_1');
+      beforeEach(inject(function(elementRegistry, modeling) {
 
-      // when
-      modeling.removeShape(shape);
-    }));
+        // given
+        const shape = elementRegistry.get('Participant_1');
 
-
-    it('should execute', inject(function(canvas) {
-
-      // then
-      const newRoot = getBusinessObject(canvas.getRootElement());
-      expect(newRoot.isExecutable).to.be.true;
-    }));
+        // when
+        modeling.removeShape(shape);
+      }));
 
 
-    it('should undo', inject(function(canvas, commandStack) {
+      it('should execute', inject(function(canvas) {
 
-      // given
-      const newRoot = getBusinessObject(canvas.getRootElement());
-
-      // when
-      commandStack.undo();
-
-      // then
-      expect(newRoot.isExecutable).not.to.exist;
-    }));
+        // then
+        const newRoot = getBusinessObject(canvas.getRootElement());
+        expect(newRoot.isExecutable).to.be.true;
+      }));
 
 
-    it('should redo', inject(function(canvas, commandStack) {
+      it('should undo', inject(function(canvas, commandStack) {
 
-      // when
-      commandStack.undo();
-      commandStack.redo();
+        // given
+        const newRoot = getBusinessObject(canvas.getRootElement());
 
-      // then
-      const newRoot = getBusinessObject(canvas.getRootElement());
-      expect(newRoot.isExecutable).to.be.true;
-    }));
+        // when
+        commandStack.undo();
+
+        // then
+        expect(newRoot.isExecutable).not.to.exist;
+      }));
+
+
+      it('should redo', inject(function(canvas, commandStack) {
+
+        // when
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        const newRoot = getBusinessObject(canvas.getRootElement());
+        expect(newRoot.isExecutable).to.be.true;
+      }));
+
+    });
+
+
+    describe('empty participant', function() {
+
+      beforeEach(bootstrapCamundaCloudModeler(emptyParticipantXML));
+
+      beforeEach(inject(function(elementRegistry, modeling) {
+
+        // given
+        const shape = elementRegistry.get('Participant_1');
+
+        // when
+        modeling.removeShape(shape);
+      }));
+
+
+      it('should execute', inject(function(canvas) {
+
+        // then
+        const newRoot = getBusinessObject(canvas.getRootElement());
+        expect(newRoot.isExecutable).not.to.exist;
+      }));
+
+
+      it('should undo', inject(function(canvas, commandStack) {
+
+        // given
+        const newRoot = getBusinessObject(canvas.getRootElement());
+
+        // when
+        commandStack.undo();
+
+        // then
+        expect(newRoot.isExecutable).not.to.exist;
+      }));
+
+
+      it('should redo', inject(function(canvas, commandStack) {
+
+        // when
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        const newRoot = getBusinessObject(canvas.getRootElement());
+        expect(newRoot.isExecutable).not.to.exist;
+      }));
+
+    });
 
   });
 
