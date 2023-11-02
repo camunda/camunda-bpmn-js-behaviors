@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.2.2
+
+* `FIX`: do not try to copy `isExecutable` from empty participants ([#54](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/54))
+
 ## 1.2.1
 
 * `DEPS`: update devDependencies
