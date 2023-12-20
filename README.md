@@ -3,11 +3,11 @@
 [![CI](https://github.com/camunda/camunda-bpmn-js-behaviors/workflows/CI/badge.svg)](https://github.com/camunda/camunda-bpmn-js-behaviors/actions?query=workflow%3ACI)
 
 
-Behaviors for [bpmn-js](https://github.com/bpmn-io/bpmn-js) ensuring that parts of the model that are specific to Camunda Platform 7 and 8 are maintained. For example, the Camunda Platform 8 behaviors will ensure that a `bpmn:BusinessRuleTask` element will not have a `zeebe:CalledDecision` and `zeebe:TaskDefinition` extension element at the same time.
+Behaviors for [bpmn-js](https://github.com/bpmn-io/bpmn-js) ensuring that parts of the model that are specific to Camunda 7 and 8 are maintained. For example, the Camunda 8 behaviors will ensure that a `bpmn:BusinessRuleTask` element will not have a `zeebe:CalledDecision` and `zeebe:TaskDefinition` extension element at the same time.
 
 ## Usage
 
-### Camunda Platform 7
+### Camunda 7
 
 ```js
 import camundaPlatformBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-platform';
@@ -22,7 +22,7 @@ const bpmnModeler = new BpmnModeler({
 bpmnModeler.importXML('...');
 ```
 
-### Camunda Platform 8
+### Camunda 8
 
 ```js
 import camundaCloudBehaviors from 'camunda-bpmn-js-behaviors/lib/camunda-cloud';
