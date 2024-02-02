@@ -34,7 +34,7 @@ jobs:
         secretId: ${{ secrets.VAULT_SECRET_ID }}
         exportEnv: false
         secrets: |
-          secret/data/products/desktop-modeler/ci/CODECOV_TOKEN CODECOV_TOKEN;
+          secret/data/products/desktop-modeler/camunda/camunda-bpmn-js-behaviors CODECOV_TOKEN;
     - name: Upload coverage
       uses: codecov/codecov-action@v4
       with:
