@@ -24,5 +24,20 @@ jobs:
       env:
         COVERAGE: 1
       run: npm run all
-    - name: Upload Coverage
-      uses: codecov/codecov-action@v3
+    - name: Import Secrets
+      id: secrets
+      uses: hashicorp/vault-action@v2.4.3
+      with:
+        url: ${{ secrets.VAULT_ADDR }}
+        method: approle
+        roleId: ${{ secrets.VAULT_ROLE_ID }}
+        secretId: ${{ secrets.VAULT_SECRET_ID }}
+        exportEnv: false
+        secrets: |
+          secret/data/products/desktop-modeler/camunda/camunda-bpmn-js-behaviors CODECOV_TOKEN;
+    - name: Upload coverage
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
+      env:
+        CODECOV_TOKEN: ${{ steps.secrets.outputs.CODECOV_TOKEN }}
