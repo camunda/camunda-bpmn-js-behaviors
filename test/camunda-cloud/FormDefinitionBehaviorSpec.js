@@ -2,12 +2,13 @@ import { without } from 'min-dash';
 
 import {
   bootstrapCamundaCloudModeler,
+  getBpmnJS,
   inject
 } from 'test/TestHelper';
 
 import { getExtensionElementsList } from 'lib/util/ExtensionElementsUtil';
 
-import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 
 import {
   getFormDefinition,
@@ -406,6 +407,26 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
     });
 
 
+    describe('set external reference', function() {
+
+      it('should remove form ID', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('withFormId');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          externalReference: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('formId')).not.to.exist;
+      }));
+    });
+
+
     describe('remove form definition', function() {
 
       it('should remove user task form', inject(function(canvas, elementRegistry, modeling) {
@@ -449,6 +470,139 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
     });
 
+
+    describe('change to Zeebe User Task', function() {
+
+      it('should remove embedded form', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1');
+
+        // when
+        addZeebeUserTask(userTask);
+
+        // then
+        const userTaskForms = getUserTaskForms();
+
+        expect(hasUsertaskForm('UserTaskForm_1', userTaskForms)).to.be.false;
+
+        const formDefinition = getFormDefinition(userTask);
+        expect(formDefinition.formKey).not.to.exist;
+      }));
+
+
+      it('should keep custom form reference as externalReference', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_11');
+        const originalFormKey = getFormDefinition(userTask).get('formKey');
+
+        // when
+        addZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.formKey).not.to.exist;
+        expect(formDefinition.externalReference).to.eql(originalFormKey);
+        expect(formDefinition.formId).not.to.exist;
+      }));
+
+
+      it('should keep empty custom form reference as externalReference', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_13');
+        const originalFormKey = getFormDefinition(userTask).get('formKey');
+
+        // when
+        addZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.formKey).not.to.exist;
+        expect(formDefinition.externalReference).to.eql(originalFormKey);
+        expect(formDefinition.formId).not.to.exist;
+      }));
+
+
+      it('should keep Camunda Form (linked)', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+        const originalFormId = getFormDefinition(userTask).get('formId');
+
+        // when
+        addZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.formKey).not.to.exist;
+        expect(formDefinition.externalReference).not.to.exist;
+        expect(formDefinition.formId).to.eql(originalFormId);
+      }));
+    });
+
+
+    describe('change from Zeebe User Task', function() {
+
+      it('should keep externalReference as formKey', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('withExternalReference');
+        const externalReference = getFormDefinition(userTask).get('externalReference');
+
+        // when
+        removeZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.externalReference).not.to.exist;
+        expect(formDefinition.formId).not.to.exist;
+        expect(formDefinition.formKey).to.eql(externalReference);
+      }));
+
+
+      it('should keep externalReference as formKey (empty value)', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('withEmptyExternalReference');
+        const externalReference = getFormDefinition(userTask).get('externalReference');
+
+        // when
+        removeZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.externalReference).not.to.exist;
+        expect(formDefinition.formId).not.to.exist;
+        expect(formDefinition.formKey).to.eql(externalReference);
+      }));
+
+
+      it('should keep Camunda Form (linked)', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('withFormId');
+        const originalFormId = getFormDefinition(userTask).get('formId');
+
+        // when
+        removeZeebeUserTask(userTask);
+
+        // then
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.formKey).not.to.exist;
+        expect(formDefinition.externalReference).not.to.exist;
+        expect(formDefinition.formId).to.eql(originalFormId);
+      }));
+
+    });
+
   });
 
 });
@@ -456,10 +610,40 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
 // helpers //////////
 
-function getUserTaskForms(rootElement) {
-  const businessObject = getBusinessObject(rootElement);
+function getUserTaskForms() {
+  const BPMN_JS = getBpmnJS();
 
-  return getExtensionElementsList(businessObject, 'zeebe:UserTaskForm');
+  return BPMN_JS.invoke(function(canvas) {
+    const rootElement = canvas.getRootElement();
+    const businessObject = getBusinessObject(rootElement);
+
+    return getExtensionElementsList(businessObject, 'zeebe:UserTaskForm');
+  });
+}
+
+function addZeebeUserTask(element) {
+  getBpmnJS().invoke(function(bpmnFactory, modeling) {
+    const extensionElements = getBusinessObject(element).get('extensionElements'),
+          values = extensionElements.get('values'),
+          zeebeUserTask = bpmnFactory.create('zeebe:UserTask');
+
+    // when
+    modeling.updateModdleProperties(element, extensionElements, {
+      values: values.concat(zeebeUserTask)
+    });
+  });
+}
+
+function removeZeebeUserTask(element) {
+  getBpmnJS().invoke(function(modeling) {
+    const extensionElements = getBusinessObject(element).get('extensionElements'),
+          values = extensionElements.get('values');
+
+    // when
+    modeling.updateModdleProperties(element, extensionElements, {
+      values: values.filter(value => !is(value, 'zeebe:UserTask'))
+    });
+  });
 }
 
 function hasUsertaskForm(id, userTaskForms) {
