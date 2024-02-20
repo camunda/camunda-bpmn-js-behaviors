@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1mcvv1o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.15.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1mcvv1o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0">
   <bpmn:process id="Process_1" isExecutable="true">
     <bpmn:extensionElements>
       <zeebe:userTaskForm id="UserTaskForm_1">{ components: [ { label: "field", key: "field" } ] }</zeebe:userTaskForm>
@@ -68,9 +68,30 @@
         <zeebe:formDefinition formId="foobar" />
       </bpmn:extensionElements>
     </bpmn:userTask>
+    <bpmn:userTask id="withExternalReference" name="With external reference">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition externalReference="custom" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="withFormId" name="With form id">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="linked" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="withEmptyExternalReference" name="With empty external reference">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition externalReference="" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_13" name="UserTask_13">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
     <bpmn:group id="Group_1iij674" categoryValueRef="CategoryValue_1ls7csf" />
     <bpmn:group id="Group_03ciaww" categoryValueRef="CategoryValue_1e18h7j" />
     <bpmn:group id="Group_0pfvk8p" categoryValueRef="CategoryValue_1efmoxk" />
+    <bpmn:group id="Group_1q0m51p" categoryValueRef="CategoryValue_1ahrnc8" />
   </bpmn:process>
   <bpmn:category id="Category_0n5sj65">
     <bpmn:categoryValue id="CategoryValue_1ls7csf" value="Form Definition" />
@@ -80,6 +101,9 @@
   </bpmn:category>
   <bpmn:category id="Category_1ald8rv">
     <bpmn:categoryValue id="CategoryValue_1efmoxk" value="Task Schedule" />
+  </bpmn:category>
+  <bpmn:category id="Category_179n72i">
+    <bpmn:categoryValue id="CategoryValue_1ahrnc8" value="Zeebe User Task" />
   </bpmn:category>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
@@ -123,8 +147,24 @@
         <dc:Bounds x="190" y="420" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0ciu3w3" bpmnElement="withExternalReference">
+        <dc:Bounds x="250" y="690" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0xs9223" bpmnElement="withFormId">
+        <dc:Bounds x="250" y="780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ts16ji" bpmnElement="withEmptyExternalReference">
+        <dc:Bounds x="390" y="690" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0usz0fw" bpmnElement="UserTask_13">
+        <dc:Bounds x="190" y="510" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Group_1iij674_di" bpmnElement="Group_1iij674">
-        <dc:Bounds x="160" y="80" width="160" height="480" />
+        <dc:Bounds x="160" y="80" width="160" height="520" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="203" y="87" width="75" height="14" />
         </bpmndi:BPMNLabel>
@@ -139,6 +179,12 @@
         <dc:Bounds x="740" y="80" width="380" height="300" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="894" y="87" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_1q0m51p_di" bpmnElement="Group_1q0m51p">
+        <dc:Bounds x="160" y="620" width="420" height="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="329" y="627" width="83" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
