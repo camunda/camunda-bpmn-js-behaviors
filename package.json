@@ -44,7 +44,7 @@
     "camunda-bpmn-moddle": "^7.0.1",
     "chai": "^4.4.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.56.0",
+    "eslint": "^9.0.0",
     "eslint-plugin-bpmn-io": "^1.0.0",
     "execa": "^8.0.0",
     "karma": "^6.4.2",
