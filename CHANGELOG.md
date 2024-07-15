@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.4.0
+
+* `FEAT`: support `zeebe:ExecutionListener` ([#76](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/76))
+* `DEPS`: update to `zeebe-bpmn-moddle@1.2.0`
+
 ## 1.3.0
 
 * `FEAT`: support `zeebe:UserTask` ([#67](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/67))
