@@ -65,7 +65,7 @@
     </bpmn:userTask>
     <bpmn:userTask id="UserTask_12" name="UserTask_12">
       <bpmn:extensionElements>
-        <zeebe:formDefinition formId="foobar" />
+        <zeebe:formDefinition formId="foobar" bindingType="deployment" />
       </bpmn:extensionElements>
     </bpmn:userTask>
     <bpmn:userTask id="withExternalReference" name="With external reference">
