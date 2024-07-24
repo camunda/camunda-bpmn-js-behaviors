@@ -338,6 +338,25 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         expect(extensionElements).not.to.exist;
       }));
 
+
+      it('should not remove binding type', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.get('bindingType')).to.equal('deployment');
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formId: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('bindingType')).to.equal('deployment');
+      }));
+
     });
 
 
@@ -404,6 +423,25 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         expect(extensionElements).not.to.exist;
       }));
 
+
+      it('should remove binding type', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.get('bindingType')).to.equal('deployment');
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          formKey: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('bindingType')).to.equal('latest'); // default value
+      }));
+
     });
 
 
@@ -424,6 +462,51 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         // then
         expect(formDefinition.get('formId')).not.to.exist;
       }));
+
+
+      it('should remove binding type', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.get('bindingType')).to.equal('deployment');
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          externalReference: 'foobar'
+        });
+
+        // then
+        expect(formDefinition.get('bindingType')).to.equal('latest'); // default value
+      }));
+
+    });
+
+
+    describe('set binding type', function() {
+
+      it('should set form ID', inject(function(elementRegistry, modeling) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_1');
+
+        const formDefinition = getFormDefinition(userTask);
+
+        expect(formDefinition.get('bindingType')).to.equal('latest'); // default value
+        expect(formDefinition.get('formId')).not.to.exist;
+
+        // when
+        modeling.updateModdleProperties(userTask, formDefinition, {
+          bindingType: 'deployment'
+        });
+
+        // then
+        expect(formDefinition.get('bindingType')).to.equal('deployment');
+        expect(formDefinition.get('formId')).to.equal('');
+      }));
+
     });
 
 
@@ -543,6 +626,22 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         expect(formDefinition.externalReference).not.to.exist;
         expect(formDefinition.formId).to.eql(originalFormId);
       }));
+
+
+      it('should keep binding type', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        expect(getFormDefinition(userTask).get('bindingType')).to.equal('deployment');
+
+        // when
+        addZeebeUserTask(userTask);
+
+        // then
+        expect(getFormDefinition(userTask).get('bindingType')).to.equal('deployment');
+      }));
+
     });
 
 
@@ -599,6 +698,21 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         expect(formDefinition.formKey).not.to.exist;
         expect(formDefinition.externalReference).not.to.exist;
         expect(formDefinition.formId).to.eql(originalFormId);
+      }));
+
+
+      it('should keep binding type', inject(function(elementRegistry) {
+
+        // given
+        const userTask = elementRegistry.get('UserTask_12');
+
+        expect(getFormDefinition(userTask).get('bindingType')).to.equal('deployment');
+
+        // when
+        removeZeebeUserTask(userTask);
+
+        // then
+        expect(getFormDefinition(userTask).get('bindingType')).to.equal('deployment');
       }));
 
     });
