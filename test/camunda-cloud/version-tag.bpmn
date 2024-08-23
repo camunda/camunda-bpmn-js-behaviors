@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0949dru" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.26.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0">
+  <bpmn:process id="Process_0xt54td" isExecutable="true">
+    <bpmn:callActivity id="CallActivity_1">
+      <bpmn:extensionElements>
+        <zeebe:calledElement propagateAllChildVariables="false" bindingType="versionTag" versionTag="v1.0.0" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:businessRuleTask id="BusinessRuleTask_1">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision bindingType="versionTag" versionTag="v1.0.0" />
+      </bpmn:extensionElements>
+    </bpmn:businessRuleTask>
+    <bpmn:userTask id="UserTask_1">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="" bindingType="versionTag" versionTag="v1.0.0" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:callActivity id="CallActivity_2">
+      <bpmn:extensionElements>
+        <zeebe:calledElement propagateAllChildVariables="false" bindingType="deployment" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:businessRuleTask id="BusinessRuleTask_2">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision bindingType="deployment" />
+      </bpmn:extensionElements>
+    </bpmn:businessRuleTask>
+    <bpmn:userTask id="UserTask_2">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formId="" bindingType="deployment" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0xt54td">
+      <bpmndi:BPMNShape id="Activity_04qoo0e_di" bpmnElement="CallActivity_1">
+        <dc:Bounds x="160" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rpa9kq_di" bpmnElement="BusinessRuleTask_1">
+        <dc:Bounds x="290" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t7eh0a_di" bpmnElement="UserTask_1">
+        <dc:Bounds x="420" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ad2nfv_di" bpmnElement="CallActivity_2">
+        <dc:Bounds x="160" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ylf3wd_di" bpmnElement="BusinessRuleTask_2">
+        <dc:Bounds x="290" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09ac9pr_di" bpmnElement="UserTask_2">
+        <dc:Bounds x="420" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
