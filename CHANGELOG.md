@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.6.0
+
+* `FEAT`: support `zeebe:versionTag` for `zeebe:CalledDecision`, `zeebe:CalledElement` and `zeebe:FormDefinition` ([#80](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/80))
+
 ## 1.5.0
 
 * `FEAT`: support `zeebe:bindingType` for `zeebe:CalledDecision`, `zeebe:CalledElement` and `zeebe:FormDefinition` ([#78](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/78))
