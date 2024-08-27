@@ -5,6 +5,7 @@ import {
 
 import {
   getBusinessObject,
+  is,
   isAny
 } from 'bpmn-js/lib/util/ModelUtil';
 
@@ -29,7 +30,7 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
         // given
         const element = elementRegistry.get(`${ type }_1`);
 
-        const extensionElement = getExtensionElement(element);
+        const extensionElement = getExtensionElementWithVersionTag(element);
 
         expect(extensionElement.get('bindingType')).to.equal('versionTag');
         expect(extensionElement.get('versionTag')).to.equal('v1.0.0');
@@ -53,7 +54,7 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
         // given
         const element = elementRegistry.get(`${ type }_2`);
 
-        const extensionElement = getExtensionElement(element);
+        const extensionElement = getExtensionElementWithVersionTag(element);
 
         expect(extensionElement.get('bindingType')).to.equal('deployment');
 
@@ -71,11 +72,35 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
 
   });
 
+
+  describe('remove version tag', function() {
+
+    it('should remove version tag', inject(function(elementRegistry, modeling) {
+
+      // given
+      const element = elementRegistry.get('Process_1');
+
+      const versionTag = getVersionTag(element);
+
+      // assume
+      expect(versionTag).to.exist;
+
+      // when
+      modeling.updateModdleProperties(element, versionTag, {
+        value: ''
+      });
+
+      // then
+      expect(getVersionTag(element)).not.to.exist;
+    }));
+
+  });
+
 });
 
 // helpers //////////
 
-function getExtensionElement(element) {
+function getExtensionElementWithVersionTag(element) {
   const businessObject = getBusinessObject(element);
 
   const extensionElements = businessObject.get('extensionElements');
@@ -90,5 +115,19 @@ function getExtensionElement(element) {
       'zeebe:CalledElement',
       'zeebe:FormDefinition'
     ]);
+  });
+}
+
+function getVersionTag(element) {
+  const businessObject = getBusinessObject(element);
+
+  const extensionElements = businessObject.get('extensionElements');
+
+  if (!extensionElements) {
+    return null;
+  }
+
+  return extensionElements.get('values').find(extensionElement => {
+    return is(extensionElement, 'zeebe:VersionTag');
   });
 }
