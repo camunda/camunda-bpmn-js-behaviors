@@ -790,7 +790,7 @@ describe('CopyPasteBehavior', function() {
 
     describe('timeCycle', function() {
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (start event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -809,7 +809,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should NOT allow to copy to non-interrupting timer boundary event', function() {
+      it('should NOT allow to copy to non-interrupting timer boundary event (intermediate catch event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -912,7 +912,7 @@ describe('CopyPasteBehavior', function() {
 
     describe('timeDate', function() {
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (start event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -931,7 +931,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (intermediate catch event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -969,7 +969,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (boundary event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -1053,7 +1053,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (intermediate catch event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),
@@ -1091,7 +1091,7 @@ describe('CopyPasteBehavior', function() {
       });
 
 
-      it('should allow to copy to non-interrupting timer boundary event', function() {
+      it('should allow to copy to non-interrupting timer boundary event (boundary event)', function() {
 
         // given
         const timerEventDefinition = moddle.create('bpmn:TimerEventDefinition'),

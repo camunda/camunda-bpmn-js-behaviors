@@ -65,7 +65,7 @@ describe('camunda-platform/features/modeling - UpdateInputOutputBehavior', funct
   });
 
 
-  describe('remove camunda:InputOuput when removing camunda:InputParameter', function() {
+  describe('remove camunda:InputOuput when removing camunda:OutputParameter', function() {
 
     let businessObject;
 
