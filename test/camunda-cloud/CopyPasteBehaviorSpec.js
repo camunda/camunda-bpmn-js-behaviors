@@ -59,85 +59,14 @@ describe('CopyPasteBehavior', function() {
 
   describe('zeebe:LoopCharacteristics', function() {
 
-    it('should allow on ServiceTask', function() {
-
-      // given
-      const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
-            serviceTask = moddle.create('bpmn:ServiceTask'),
-            extensionElements = moddle.create('bpmn:ExtensionElements');
-
-      extensionElements.$parent = serviceTask;
-
-      // when
-      const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
-
-      // then
-      expect(canCopyProperty).not.to.be.false;
-    });
-
-
-    it('should allow on ReceiveTask', function() {
-
-      // given
-      const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
-            receiveTask = moddle.create('bpmn:ReceiveTask'),
-            extensionElements = moddle.create('bpmn:ExtensionElements');
-
-      extensionElements.$parent = receiveTask;
-
-      // when
-      const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
-
-      // then
-      expect(canCopyProperty).not.to.be.false;
-    });
-
-
-    it('should allow on SubProcess', function() {
-
-      // given
-      const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
-            subProcess = moddle.create('bpmn:SubProcess'),
-            extensionElements = moddle.create('bpmn:ExtensionElements');
-
-      extensionElements.$parent = subProcess;
-
-      // when
-      const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
-
-      // then
-      expect(canCopyProperty).not.to.be.false;
-    });
-
-
-    it('should not allow on CallActivity', function() {
-
-      // given
-      const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
-            callActivity = moddle.create('bpmn:CallActivity'),
-            extensionElements = moddle.create('bpmn:ExtensionElements');
-
-      extensionElements.$parent = callActivity;
-
-      // when
-      const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
-
-      // then
-      expect(canCopyProperty).to.be.false;
-    });
-
-
-    it('should allow on intermediateThrowEvent with messageDefinition', function() {
+    it('should allow on bpmn:MultiInstanceLoopCharacteristics', function() {
 
       // given
       const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
             extensionElements = moddle.create('bpmn:ExtensionElements'),
-            messageEventDefinition = moddle.create('bpmn:MessageEventDefinition'),
-            messageIntermediateThrowEvent = moddle.create('bpmn:IntermediateThrowEvent');
+            multiInstanceLoopCharacteristics = moddle.create('bpmn:MultiInstanceLoopCharacteristics');
 
-      extensionElements.$parent = messageIntermediateThrowEvent;
-      messageEventDefinition.$parent = messageIntermediateThrowEvent;
-      messageIntermediateThrowEvent.eventDefinitions = [ messageEventDefinition ];
+      extensionElements.$parent = multiInstanceLoopCharacteristics;
 
       // when
       const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
@@ -147,17 +76,14 @@ describe('CopyPasteBehavior', function() {
     });
 
 
-    it('should not allow on errorEndEvent', function() {
+    it('should not allow on bpmn:StandardLoopCharacteristics', function() {
 
       // given
       const loopCharacteristics = moddle.create('zeebe:LoopCharacteristics'),
             extensionElements = moddle.create('bpmn:ExtensionElements'),
-            errorEventDefinition = moddle.create('bpmn:ErrorEventDefinition'),
-            endEvent = moddle.create('bpmn:EndEvent');
+            standardLoopCharacteristics = moddle.create('bpmn:StandardLoopCharacteristics');
 
-      extensionElements.$parent = endEvent;
-      errorEventDefinition.$parent = endEvent;
-      endEvent.eventDefinitions = [ errorEventDefinition ];
+      extensionElements.$parent = standardLoopCharacteristics;
 
       // when
       const canCopyProperty = copyPasteBehavior.canCopyProperty(loopCharacteristics, extensionElements);
