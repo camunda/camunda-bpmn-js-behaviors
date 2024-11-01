@@ -12,7 +12,8 @@ import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 
 import {
   getFormDefinition,
-  getUserTaskForm
+  getUserTaskForm,
+  userTaskFormIdToFormKey
 } from 'lib/camunda-cloud/util/FormsUtil';
 
 import diagramXML from './process-user-tasks.bpmn';
@@ -156,11 +157,16 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
       // given
       const rootElement = canvas.getRootElement();
 
-      const userTask1 = elementRegistry.get('UserTask_1'),
-            userTask2 = elementRegistry.get('UserTask_2');
+      const userTask1 = elementRegistry.get('UserTask_1');
+
+      modeling.updateModdleProperties(rootElement, getBusinessObject(rootElement).get('extensionElements'), {
+        values: [
+          getUserTaskForm(userTask1)
+        ]
+      });
 
       // when
-      modeling.removeElements([ userTask1, userTask2 ]);
+      modeling.removeElements([ userTask1 ]);
 
       // then
       const extensionElements = getBusinessObject(rootElement).get('extensionElements');
@@ -171,97 +177,172 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
   });
 
 
-  describe('create user task form', function() {
+  describe('create and reference new user task form', function() {
 
-    describe('on copy user task', function() {
+    describe('no existing form definition or user task form', function() {
 
-      it('should execute', inject(function(canvas, copyPaste, elementRegistry) {
+      it('should not create and reference new user task form', inject(function(canvas, elementFactory, modeling) {
 
         // given
         const rootElement = canvas.getRootElement();
 
-        const element = elementRegistry.get('UserTask_1');
-
-        const oldUserTaskForm = getUserTaskForm(element);
-
-        const oldFormDefinition = getFormDefinition(element);
-
-        // when
-        copyPaste.copy([ element ]);
-
-        const newElements = copyPaste.paste({
-          element: rootElement,
-          point: {
-            x: 1000,
-            y: 1000
-          }
+        const element = elementFactory.createShape({
+          type: 'bpmn:UserTask'
         });
 
-        const newElement = newElements[0];
-
-        const formDefinition = getFormDefinition(newElement);
-
-        const userTaskForm = getUserTaskForm(newElement);
+        // when
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
 
         // then
-        expect(formDefinition).not.to.eql(oldFormDefinition);
+        expect(getUserTaskForm(element)).not.to.exist;
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(3);
+      }));
 
-        expect(userTaskForm).not.to.eql(oldUserTaskForm);
+    });
+
+
+    describe('existing form definition, no user task form', function() {
+
+      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory, modeling) {
+
+        // given
+        const rootElement = canvas.getRootElement();
+
+        const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
+          formId: 'foo'
+        });
+
+        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements', {
+          values: [ formDefinition ]
+        });
+
+        formDefinition.$parent = extensionElements;
+
+        const businessObject = bpmnFactory.create('bpmn:UserTask', {
+          extensionElements
+        });
+
+        extensionElements.$parent = businessObject;
+
+        const element = elementFactory.createShape({
+          type: 'bpmn:UserTask',
+          businessObject
+        });
+
+        // when
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+
+        // then
+        expect(getUserTaskForm(element)).not.to.exist;
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(3);
+      }));
+
+    });
+
+
+    describe('existing form definition, user task form not referenced', function() {
+
+      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory, modeling) {
+
+        // given
+        const rootElement = canvas.getRootElement();
+
+        const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
+          formKey: userTaskFormIdToFormKey('UserTaskForm_3')
+        });
+
+        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements', {
+          values: [ formDefinition ]
+        });
+
+        formDefinition.$parent = extensionElements;
+
+        const businessObject = bpmnFactory.create('bpmn:UserTask', {
+          extensionElements
+        });
+
+        extensionElements.$parent = businessObject;
+
+        const element = elementFactory.createShape({
+          type: 'bpmn:UserTask',
+          businessObject
+        });
+
+        // when
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+
+        // then
+        expect(getUserTaskForm(element)).to.exist;
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(3);
+      }));
+
+    });
+
+
+    describe('existing form definition, user task form referenced', function() {
+
+      let element;
+
+      beforeEach(inject(function(canvas, bpmnFactory, elementFactory, modeling) {
+
+        // given
+        const rootElement = canvas.getRootElement();
+
+        const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
+          formKey: userTaskFormIdToFormKey('UserTaskForm_1')
+        });
+
+        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements', {
+          values: [ formDefinition ]
+        });
+
+        formDefinition.$parent = extensionElements;
+
+        const businessObject = bpmnFactory.create('bpmn:UserTask', {
+          extensionElements
+        });
+
+        extensionElements.$parent = businessObject;
+
+        element = elementFactory.createShape({
+          type: 'bpmn:UserTask',
+          businessObject
+        });
+
+        // when
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
       }));
 
 
-      it('should undo', inject(function(canvas, commandStack, copyPaste, elementRegistry) {
+      it('should create and reference new user task form (execute)', inject(function(canvas) {
 
-        // given
-        const rootElement = canvas.getRootElement();
+        // then
+        expect(getUserTaskForm(element)).to.exist;
+        expect(getUserTaskForm(element).get('id')).to.not.equal('UserTaskForm_1');
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(4);
+      }));
 
-        const element = elementRegistry.get('UserTask_1');
 
-        copyPaste.copy([ element ]);
-
-        copyPaste.paste({
-          element: rootElement,
-          point: {
-            x: 1000,
-            y: 1000
-          }
-        });
+      it('should create and reference new user task form (undo)', inject(function(canvas, commandStack) {
 
         // when
         commandStack.undo();
 
-        const userTaskForms = getUserTaskForms(rootElement);
-
         // then
-        expect(userTaskForms).to.have.length(2);
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(3);
       }));
 
 
-      it('should redo', inject(function(canvas, commandStack, copyPaste, elementRegistry) {
-
-        // given
-        const rootElement = canvas.getRootElement();
-
-        const element = elementRegistry.get('UserTask_1');
-
-        copyPaste.copy([ element ]);
-
-        copyPaste.paste({
-          element: rootElement,
-          point: {
-            x: 1000,
-            y: 1000
-          }
-        });
+      it('should create and reference new user task form (redo)', inject(function(canvas, commandStack) {
 
         // when
         commandStack.undo();
         commandStack.redo();
 
-        const userTaskForms = getUserTaskForms(rootElement);
-
         // then
-        expect(userTaskForms).to.have.length(3);
+        expect(getUserTaskForm(element)).to.exist;
+        expect(getUserTaskForm(element).get('id')).to.not.equal('UserTaskForm_1');
+        expect(getUserTaskForms(canvas.getRootElement())).to.have.length(4);
       }));
 
     });
@@ -316,10 +397,15 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
       it('should remove extension elements', inject(function(canvas, elementRegistry, modeling) {
 
         // given
-        const userTask1 = elementRegistry.get('UserTask_1'),
-              userTask2 = elementRegistry.get('UserTask_2');
+        const rootElement = canvas.getRootElement();
 
-        modeling.removeElements([ userTask2 ]);
+        const userTask1 = elementRegistry.get('UserTask_1');
+
+        modeling.updateModdleProperties(rootElement, getBusinessObject(rootElement).get('extensionElements'), {
+          values: [
+            getUserTaskForm(userTask1)
+          ]
+        });
 
         const formDefinition = getFormDefinition(userTask1);
 
@@ -330,8 +416,6 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
         // then
         expect(formDefinition.get('formKey')).not.to.exist;
-
-        const rootElement = canvas.getRootElement();
 
         const extensionElements = getBusinessObject(rootElement).get('extensionElements');
 
@@ -403,10 +487,15 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
       it('should remove extension elements', inject(function(canvas, elementRegistry, modeling) {
 
         // given
-        const userTask1 = elementRegistry.get('UserTask_1'),
-              userTask2 = elementRegistry.get('UserTask_2');
+        const rootElement = canvas.getRootElement();
 
-        modeling.removeElements([ userTask2 ]);
+        const userTask1 = elementRegistry.get('UserTask_1');
+
+        modeling.updateModdleProperties(rootElement, getBusinessObject(rootElement).get('extensionElements'), {
+          values: [
+            getUserTaskForm(userTask1)
+          ]
+        });
 
         const formDefinition = getFormDefinition(userTask1);
 
@@ -416,8 +505,6 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // then
-        const rootElement = canvas.getRootElement();
-
         const extensionElements = getBusinessObject(rootElement).get('extensionElements');
 
         expect(extensionElements).not.to.exist;

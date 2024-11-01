@@ -2,8 +2,9 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1mcvv1o" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0">
   <bpmn:process id="Process_1" isExecutable="true">
     <bpmn:extensionElements>
-      <zeebe:userTaskForm id="UserTaskForm_1">{ components: [ { label: "field", key: "field" } ] }</zeebe:userTaskForm>
-      <zeebe:userTaskForm id="UserTaskForm_2">{ components: [ { label: "anotherField", key: "field" } ] }</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_1">{ components: [ { label: "foo", key: "field" } ] }</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_2">{ components: [ { label: "bar", key: "field" } ] }</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="UserTaskForm_3">{ components: [ { label: "baz", key: "field" } ] }</zeebe:userTaskForm>
     </bpmn:extensionElements>
     <bpmn:userTask id="UserTask_1" name="UserTask_1">
       <bpmn:extensionElements>
