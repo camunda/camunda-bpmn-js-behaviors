@@ -14,7 +14,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
   beforeEach(bootstrapCamundaCloudModeler(diagramXML));
 
-  describe('remove execution listeners if disallowed in element type', function() {
+  describe('remove task listeners if disallowed in element type', function() {
 
     const testCases = [
       {
@@ -25,10 +25,10 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
         }
       },
       {
-        title: 'User Task -> Gateway',
+        title: 'User Task -> ParallelGateway',
         element: 'UserTask',
         target: {
-          type: 'bpmn:Gateway'
+          type: 'bpmn:ParallelGateway'
         }
       }
     ];
@@ -48,9 +48,9 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
           // then
           el = elementRegistry.get(element);
 
-          const executionListenersContainer = getTaskListenersContainer(el);
+          const taskListenersContainer = getTaskListenersContainer(el);
 
-          expect(executionListenersContainer).not.to.exist;
+          expect(taskListenersContainer).not.to.exist;
         }));
 
 
@@ -85,15 +85,15 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
           // then
           el = elementRegistry.get(element);
-          const executionListenersContainer = getTaskListenersContainer(el);
+          const taskListenersContainer = getTaskListenersContainer(el);
 
-          expect(executionListenersContainer).not.to.exist;
+          expect(taskListenersContainer).not.to.exist;
         }));
       });
     }
   });
 
-  describe('should remove execution listeners of disallowed type', function() {
+  describe('should remove task listeners of disallowed type', function() {
 
     it('should execute', inject(function(bpmnReplace, elementRegistry) {
 
@@ -163,7 +163,6 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       // then
       el = elementRegistry.get('NonZeebeUserTask');
       const extensionElements = getBusinessObject(el).get('extensionElements');
-      console.log(extensionElements.get('values'));
 
       expect(extensionElements.get('values')).to.have.lengthOf(0);
     }));
