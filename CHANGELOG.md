@@ -6,6 +6,8 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: support `zeebe:TaskListener` ([#88](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/88))
+
 ## 1.6.1
 
 * `FIX`: remove empty `zeebe:VersionTag` ([#81](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/81))
