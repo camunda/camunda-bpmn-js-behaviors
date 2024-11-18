@@ -6,6 +6,8 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.7.1
+
 * `FIX`: clean up `zeebe:TaskListeners` on user task properties update ([#90](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/90))
 
 ## 1.7.0
