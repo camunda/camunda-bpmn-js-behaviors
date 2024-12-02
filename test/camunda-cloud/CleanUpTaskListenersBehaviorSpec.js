@@ -108,9 +108,9 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // then
       el = elementRegistry.get('UserTaskWrongType');
-      const container = getFirstExtensionElement(el, 'zeebe:TaskListeners');
+      const taskListenersContainer = getTaskListenersContainer(el);
 
-      expect(container.get('listeners')).to.have.lengthOf(1);
+      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(1);
     }));
 
 
@@ -128,9 +128,9 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // then
       el = elementRegistry.get('UserTaskWrongType');
-      const container = getFirstExtensionElement(el, 'zeebe:TaskListeners');
+      const taskListenersContainer = getTaskListenersContainer(el);
 
-      expect(container.get('listeners')).to.have.lengthOf(2);
+      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(2);
     }));
 
 
@@ -149,9 +149,9 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // then
       el = elementRegistry.get('UserTaskWrongType');
-      const container = getFirstExtensionElement(el, 'zeebe:TaskListeners');
+      const taskListenersContainer = getTaskListenersContainer(el);
 
-      expect(container.get('listeners')).to.have.lengthOf(1);
+      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(1);
     }));
 
 
@@ -177,10 +177,10 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // given
       const el = elementRegistry.get('UserTask');
-      const listenersContainer = getTaskListenersContainer(el);
+      const taskListenersContainer = getTaskListenersContainer(el);
 
       // when
-      modeling.updateModdleProperties(el, listenersContainer, { listeners: [] });
+      modeling.updateModdleProperties(el, taskListenersContainer, { listeners: [] });
 
       // then
       const extensionElements = getElementExtensions(el);
@@ -199,8 +199,8 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       modeling.updateModdleProperties(el, extensionElements, { values: removeZeebeUserTask(extensionElements) });
 
       // then
-      const listenersContainer = getTaskListenersContainer(el);
-      expect(listenersContainer).not.to.exist;
+      const taskListenersContainer = getTaskListenersContainer(el);
+      expect(taskListenersContainer).not.to.exist;
     }));
 
 
@@ -215,12 +215,12 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       // then
       const extensionElements = getElementExtensions(el);
 
-      const taskListeners = getFirstExtensionElement(el, 'zeebe:TaskListeners');
+      const taskListenersContainer = getTaskListenersContainer(el);
       const userTask = getFirstExtensionElement(el, 'zeebe:UserTask');
       const formDefinition = getFirstExtensionElement(el, 'zeebe:FormDefinition');
 
       expect(extensionElements.get('values')).to.have.lengthOf(3);
-      expect(taskListeners).to.exist;
+      expect(taskListenersContainer).to.exist;
       expect(userTask).to.exist;
       expect(formDefinition).to.exist;
     }));
