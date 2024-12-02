@@ -67,7 +67,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
           // then
           el = elementRegistry.get(element);
-          const extensionElements = getElementExtensions(el);
+          const extensionElements = getExtensionElements(el);
 
           expect(extensionElements.get('values')).to.have.lengthOf(2);
         }));
@@ -167,7 +167,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // then
       el = elementRegistry.get('NonZeebeUserTask');
-      const extensionElements = getElementExtensions(el);
+      const extensionElements = getExtensionElements(el);
 
       expect(extensionElements.get('values')).to.have.lengthOf(0);
     }));
@@ -183,7 +183,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       modeling.updateModdleProperties(el, taskListenersContainer, { listeners: [] });
 
       // then
-      const extensionElements = getElementExtensions(el);
+      const extensionElements = getExtensionElements(el);
 
       expect(extensionElements.get('values')).to.have.lengthOf(1);
     }));
@@ -195,7 +195,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       const el = elementRegistry.get('UserTask');
 
       // when
-      const extensionElements = getElementExtensions(el);
+      const extensionElements = getExtensionElements(el);
       modeling.updateModdleProperties(el, extensionElements, { values: removeZeebeUserTask(extensionElements) });
 
       // then
@@ -213,7 +213,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       addFormDefinition(el);
 
       // then
-      const extensionElements = getElementExtensions(el);
+      const extensionElements = getExtensionElements(el);
 
       const taskListenersContainer = getTaskListenersContainer(el);
       const userTask = getFirstExtensionElement(el, 'zeebe:UserTask');
@@ -230,7 +230,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
 // helpers
 
-function getElementExtensions(element) {
+function getExtensionElements(element) {
   return getBusinessObject(element).get('extensionElements');
 }
 
@@ -248,7 +248,7 @@ function removeZeebeUserTask(extensionElements) {
 
 function addFormDefinition(element) {
   getBpmnJS().invoke(function(bpmnFactory, modeling) {
-    const extensionElements = getElementExtensions(element);
+    const extensionElements = getExtensionElements(element);
     const values = extensionElements.get('values'),
           formDefinition = bpmnFactory.create('zeebe:FormDefinition');
 
