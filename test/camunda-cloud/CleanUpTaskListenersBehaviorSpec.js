@@ -100,10 +100,11 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // given
       let el = elementRegistry.get('UserTaskWrongType');
-      let targetEl = elementRegistry.get('UserTask');
 
       // when
-      bpmnReplace.replaceElement(el, targetEl);
+      bpmnReplace.replaceElement(el, {
+        type: 'bpmn:UserTask'
+      });
 
       // then
       el = elementRegistry.get('UserTaskWrongType');
@@ -117,10 +118,11 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // given
       let el = elementRegistry.get('UserTaskWrongType');
-      let targetEl = elementRegistry.get('UserTask');
 
       // when
-      bpmnReplace.replaceElement(el, targetEl);
+      bpmnReplace.replaceElement(el, {
+        type: 'bpmn:UserTask'
+      });
 
       commandStack.undo();
 
@@ -136,10 +138,11 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // given
       let el = elementRegistry.get('UserTaskWrongType');
-      let targetEl = elementRegistry.get('UserTask');
 
       // when
-      bpmnReplace.replaceElement(el, targetEl);
+      bpmnReplace.replaceElement(el, {
+        type: 'bpmn:UserTask'
+      });
 
       commandStack.undo();
       commandStack.redo();
@@ -156,10 +159,11 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
 
       // given
       let el = elementRegistry.get('NonZeebeUserTask');
-      const targetEl = elementRegistry.get('UserTask');
 
       // when
-      bpmnReplace.replaceElement(el, targetEl);
+      bpmnReplace.replaceElement(el, {
+        type: 'bpmn:UserTask'
+      });
 
       // then
       el = elementRegistry.get('NonZeebeUserTask');
