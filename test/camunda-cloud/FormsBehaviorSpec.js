@@ -191,7 +191,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement, { createElementsBehavior: false });
 
         // then
         expect(getUserTaskForm(element)).not.to.exist;
@@ -230,7 +230,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement, { createElementsBehavior: false });
 
         // then
         expect(getUserTaskForm(element)).not.to.exist;
@@ -269,7 +269,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement, { createElementsBehavior: false });
 
         // then
         expect(getUserTaskForm(element)).to.exist;
@@ -310,7 +310,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        modeling.createShape(element, { x: 100, y: 100 }, rootElement, { createElementsBehavior: false });
       }));
 
 

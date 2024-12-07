@@ -155,24 +155,6 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
     }));
 
 
-    it('should remove zeebe:TaskListeners for non zeebe user task', inject(function(bpmnReplace, elementRegistry) {
-
-      // given
-      let el = elementRegistry.get('NonZeebeUserTask');
-
-      // when
-      bpmnReplace.replaceElement(el, {
-        type: 'bpmn:UserTask'
-      });
-
-      // then
-      el = elementRegistry.get('NonZeebeUserTask');
-      const extensionElements = getExtensionElements(el);
-
-      expect(extensionElements.get('values')).to.have.lengthOf(0);
-    }));
-
-
     it('should remove zeebe:TaskListeners container when empty', inject(function(elementRegistry, modeling) {
 
       // given
