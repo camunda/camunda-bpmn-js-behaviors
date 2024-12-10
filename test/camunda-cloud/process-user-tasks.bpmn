@@ -84,6 +84,11 @@
         <zeebe:formDefinition externalReference="" />
       </bpmn:extensionElements>
     </bpmn:userTask>
+    <bpmn:userTask id="withZeebeUserTask" name="With zeebe user task">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
     <bpmn:userTask id="UserTask_13" name="UserTask_13">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="" />
@@ -155,6 +160,10 @@
       <bpmndi:BPMNShape id="BPMNShape_0xs9223" bpmnElement="withFormId">
         <dc:Bounds x="250" y="780" width="100" height="80" />
         <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0xs9191" bpmnElement="withZeebeUserTask">
+        <dc:Bounds x="250" y="870" width="100" height="80" />
+      <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_1ts16ji" bpmnElement="withEmptyExternalReference">
         <dc:Bounds x="390" y="690" width="100" height="80" />

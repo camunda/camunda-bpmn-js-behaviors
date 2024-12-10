@@ -181,17 +181,15 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
     describe('no existing form definition or user task form', function() {
 
-      it('should not create and reference new user task form', inject(function(canvas, elementFactory, modeling) {
+      it('should not create and reference new user task form', inject(function(canvas, elementFactory) {
 
         // given
-        const rootElement = canvas.getRootElement();
-
         const element = elementFactory.createShape({
           type: 'bpmn:UserTask'
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        createShape(element);
 
         // then
         expect(getUserTaskForm(element)).not.to.exist;
@@ -203,11 +201,9 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
     describe('existing form definition, no user task form', function() {
 
-      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory, modeling) {
+      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory) {
 
         // given
-        const rootElement = canvas.getRootElement();
-
         const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
           formId: 'foo'
         });
@@ -230,7 +226,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        createShape(element);
 
         // then
         expect(getUserTaskForm(element)).not.to.exist;
@@ -242,11 +238,9 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
     describe('existing form definition, user task form not referenced', function() {
 
-      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory, modeling) {
+      it('should not create and reference new form definition', inject(function(bpmnFactory, canvas, elementFactory) {
 
         // given
-        const rootElement = canvas.getRootElement();
-
         const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
           formKey: userTaskFormIdToFormKey('UserTaskForm_3')
         });
@@ -269,7 +263,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        createShape(element);
 
         // then
         expect(getUserTaskForm(element)).to.exist;
@@ -283,11 +277,9 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
 
       let element;
 
-      beforeEach(inject(function(canvas, bpmnFactory, elementFactory, modeling) {
+      beforeEach(inject(function(bpmnFactory, elementFactory) {
 
         // given
-        const rootElement = canvas.getRootElement();
-
         const formDefinition = bpmnFactory.create('zeebe:FormDefinition', {
           formKey: userTaskFormIdToFormKey('UserTaskForm_1')
         });
@@ -310,7 +302,7 @@ describe('camunda-cloud/features/modeling - FormsBehavior', function() {
         });
 
         // when
-        modeling.createShape(element, { x: 100, y: 100 }, rootElement);
+        createShape(element);
       }));
 
 
@@ -850,5 +842,17 @@ function removeZeebeUserTask(element) {
 function hasUsertaskForm(id, userTaskForms) {
   return !!userTaskForms.find((userTaskForm) => {
     return userTaskForm.get('zeebe:id') === id;
+  });
+}
+
+/**
+ * Create shape without invoking create behavior.
+ * This allows to create a job-worker user task for the tests purpose.
+ * @param {ModdleElement} element
+ */
+function createShape(element) {
+  return getBpmnJS().invoke(function(canvas, modeling) {
+    const rootElement = canvas.getRootElement();
+    return modeling.createShape(element, { x: 100, y: 100 }, rootElement, { createElementsBehavior: false });
   });
 }
