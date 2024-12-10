@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.8.0
+
+* `FEAT`: make `Zeebe user task` the default implementation of user task ([#86](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/86))
+
 ## 1.7.2
 
 * `FIX`: create new user task form only if user task form referenced ([#85](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/85))
