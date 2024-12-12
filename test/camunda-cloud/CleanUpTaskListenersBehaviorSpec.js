@@ -94,66 +94,7 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
     }
   });
 
-  describe('should remove task listeners of disallowed type', function() {
-
-    it('should execute', inject(function(bpmnReplace, elementRegistry) {
-
-      // given
-      let el = elementRegistry.get('UserTaskWrongType');
-
-      // when
-      bpmnReplace.replaceElement(el, {
-        type: 'bpmn:UserTask'
-      });
-
-      // then
-      el = elementRegistry.get('UserTaskWrongType');
-      const taskListenersContainer = getTaskListenersContainer(el);
-
-      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(1);
-    }));
-
-
-    it('should undo', inject(function(bpmnReplace, commandStack, elementRegistry) {
-
-      // given
-      let el = elementRegistry.get('UserTaskWrongType');
-
-      // when
-      bpmnReplace.replaceElement(el, {
-        type: 'bpmn:UserTask'
-      });
-
-      commandStack.undo();
-
-      // then
-      el = elementRegistry.get('UserTaskWrongType');
-      const taskListenersContainer = getTaskListenersContainer(el);
-
-      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(2);
-    }));
-
-
-    it('should redo', inject(function(bpmnReplace, commandStack, elementRegistry) {
-
-      // given
-      let el = elementRegistry.get('UserTaskWrongType');
-
-      // when
-      bpmnReplace.replaceElement(el, {
-        type: 'bpmn:UserTask'
-      });
-
-      commandStack.undo();
-      commandStack.redo();
-
-      // then
-      el = elementRegistry.get('UserTaskWrongType');
-      const taskListenersContainer = getTaskListenersContainer(el);
-
-      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(1);
-    }));
-
+  describe('zeebe:TaskListeners removal', function() {
 
     it('should remove zeebe:TaskListeners container when empty', inject(function(elementRegistry, modeling) {
 
@@ -205,6 +146,22 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
       expect(taskListenersContainer).to.exist;
       expect(userTask).to.exist;
       expect(formDefinition).to.exist;
+    }));
+
+
+    it('should NOT remove task listeners of unknown event type', inject(function(elementRegistry, modeling) {
+
+      // given
+      const el = elementRegistry.get('UserTaskWrongType');
+
+      // when
+      modeling.updateModdleProperties(el, getBusinessObject(el), { name: 'newName' });
+
+      // then
+      const taskListenersContainer = getTaskListenersContainer(el);
+
+      expect(taskListenersContainer).to.exist;
+      expect(taskListenersContainer.get('listeners')).to.have.lengthOf(2);
     }));
   });
 });
