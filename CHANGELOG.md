@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.9.0
+
+* `FEAT`: relax `zeebe:TaskListeners` cleanup based on event types ([#92](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/92))
+
 ## 1.8.0
 
 * `FEAT`: make `Zeebe user task` the default implementation of user task ([#86](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/86))
