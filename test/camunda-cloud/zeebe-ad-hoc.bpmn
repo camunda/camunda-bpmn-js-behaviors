@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="simple" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.30.0" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL bpmn0.xsd">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:adHocSubProcess id="Adhoc_Subprocess">
+      <bpmn:extensionElements>
+        <zeebe:adHoc activeElementsCollection="=items" />
+      </bpmn:extensionElements>
+      <bpmn:task id="Activity_1u00137" />
+      <bpmn:task id="Activity_0b2gnz4" />
+    </bpmn:adHocSubProcess>
+    <bpmn:subProcess id="Subprocess">
+      <bpmn:task id="Activity_170vlk4" />
+      <bpmn:task id="Activity_15c5abi" />
+    </bpmn:subProcess>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="BPMNShape_1pgqyy7" bpmnElement="Adhoc_Subprocess" isExpanded="true">
+        <dc:Bounds x="510" y="80" width="350" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0w1g1io" bpmnElement="Activity_1u00137">
+        <dc:Bounds x="545" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0r2twic" bpmnElement="Activity_0b2gnz4">
+        <dc:Bounds x="695" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bhia20_di" bpmnElement="Subprocess" isExpanded="true">
+        <dc:Bounds x="125" y="80" width="350" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_170vlk4_di" bpmnElement="Activity_170vlk4">
+        <dc:Bounds x="160" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15c5abi_di" bpmnElement="Activity_15c5abi">
+        <dc:Bounds x="310" y="140" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
