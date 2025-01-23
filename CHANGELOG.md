@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.9.1
+
+* `DEPS`: update to `zeebe-bpmn-moddle@1.9.0`
+
 ## 1.9.0
 
 * `FEAT`: relax `zeebe:TaskListeners` cleanup based on event types ([#92](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/92))
