@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.10.0
+
+* `DEPS`: update to `bpmn-js@18.6.1`
+* `FEAT`: remove message ref when replacing with send task or throw event
+
 ## 1.9.1
 
 * `DEPS`: update to `zeebe-bpmn-moddle@1.9.0`
