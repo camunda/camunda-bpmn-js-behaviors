@@ -9,12 +9,13 @@ import {
   isAny
 } from 'bpmn-js/lib/util/ModelUtil';
 
-import diagramXML from './version-tag.bpmn';
+import diagramProcessXML from './version-tag-process.bpmn';
+import diagramCollaborationXML from './version-tag-collaboration.bpmn';
 
 
 describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
 
-  beforeEach(bootstrapCamundaCloudModeler(diagramXML));
+  beforeEach(bootstrapCamundaCloudModeler(diagramProcessXML));
 
 
   [
@@ -75,24 +76,58 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
 
   describe('remove version tag', function() {
 
-    it('should remove version tag', inject(function(elementRegistry, modeling) {
+    describe('process', function() {
 
-      // given
-      const element = elementRegistry.get('Process_1');
+      beforeEach(bootstrapCamundaCloudModeler(diagramProcessXML));
 
-      const versionTag = getVersionTag(element);
 
-      // assume
-      expect(versionTag).to.exist;
+      it('should remove version tag (process)', inject(function(elementRegistry, modeling) {
 
-      // when
-      modeling.updateModdleProperties(element, versionTag, {
-        value: ''
-      });
+        // given
+        const element = elementRegistry.get('Process_1');
 
-      // then
-      expect(getVersionTag(element)).not.to.exist;
-    }));
+        const versionTag = getVersionTag(element);
+
+        // assume
+        expect(versionTag).to.exist;
+
+        // when
+        modeling.updateModdleProperties(element, versionTag, {
+          value: ''
+        });
+
+        // then
+        expect(getVersionTag(element)).not.to.exist;
+      }));
+
+    });
+
+
+    describe('collaboration', function() {
+
+      beforeEach(bootstrapCamundaCloudModeler(diagramCollaborationXML));
+
+
+      it('should remove version tag (collaboration)', inject(function(elementRegistry, modeling) {
+
+        // given
+        const element = elementRegistry.get('Participant_1');
+
+        const versionTag = getVersionTag(element);
+
+        // assume
+        expect(versionTag).to.exist;
+
+        // when
+        modeling.updateModdleProperties(element, versionTag, {
+          value: ''
+        });
+
+        // then
+        expect(getVersionTag(element)).not.to.exist;
+      }));
+
+    });
 
   });
 
@@ -119,7 +154,11 @@ function getExtensionElementWithVersionTag(element) {
 }
 
 function getVersionTag(element) {
-  const businessObject = getBusinessObject(element);
+  let businessObject = getBusinessObject(element);
+
+  if (is(businessObject, 'bpmn:Participant')) {
+    businessObject = businessObject.get('processRef');
+  }
 
   const extensionElements = businessObject.get('extensionElements');
 
