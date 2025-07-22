@@ -46,11 +46,31 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
         expect(extensionElement.get('versionTag')).not.to.exist;
       }));
 
+
+      it('should keep version tag unset if version tag is undefined', inject(function(elementRegistry, modeling) {
+
+        // given
+        const element = elementRegistry.get(`${ type }_2`);
+
+        const extensionElement = getExtensionElementWithVersionTag(element);
+
+        expect(extensionElement.get('bindingType')).to.equal('deployment');
+
+        // when
+        modeling.updateModdleProperties(element, extensionElement, {
+          versionTag: undefined
+        });
+
+        // then
+        expect(extensionElement.get('bindingType')).to.equal('deployment');
+        expect(extensionElement.get('versionTag')).not.to.exist;
+      }));
+
     });
 
     describe('set binding type', function() {
 
-      it('should set binding type', inject(function(elementRegistry, modeling) {
+      it('should set binding type when setting versionTag', inject(function(elementRegistry, modeling) {
 
         // given
         const element = elementRegistry.get(`${ type }_2`);
