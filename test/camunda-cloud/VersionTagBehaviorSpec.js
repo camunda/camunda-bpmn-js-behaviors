@@ -46,6 +46,26 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
         expect(extensionElement.get('versionTag')).not.to.exist;
       }));
 
+      it('should set "latest" when versionTag = undefined', inject(function(elementRegistry, modeling) {
+
+        // given
+        const element = elementRegistry.get(`${ type }_1`);
+
+        const extensionElement = getExtensionElementWithVersionTag(element);
+
+        expect(extensionElement.get('bindingType')).to.equal('versionTag');
+        expect(extensionElement.get('versionTag')).to.equal('v1.0.0');
+
+        // when
+        modeling.updateModdleProperties(element, extensionElement, {
+          versionTag: undefined
+        });
+
+        // then
+        expect(extensionElement.get('bindingType')).to.equal('latest');
+        expect(extensionElement.get('versionTag')).not.to.exist;
+      }));
+
 
       it('should keep version tag unset if version tag is undefined', inject(function(elementRegistry, modeling) {
 
@@ -89,7 +109,27 @@ describe('camunda-cloud/features/modeling - VersionTagBehavior', function() {
         expect(extensionElement.get('versionTag')).to.equal('v1.0.0');
       }));
 
+      it('should create `versionTag` when setting bindingType to versionTag', inject(function(elementRegistry, modeling) {
+
+        // given
+        const element = elementRegistry.get(`${ type }_2`);
+
+        const extensionElement = getExtensionElementWithVersionTag(element);
+
+        expect(extensionElement.get('bindingType')).to.equal('deployment');
+
+        // when
+        modeling.updateModdleProperties(element, extensionElement, {
+          bindingType: 'versionTag',
+        });
+
+        // then
+        expect(extensionElement.get('bindingType')).to.equal('versionTag');
+        expect(extensionElement.get('versionTag')).to.equal('');
+      }));
+
     });
+
 
   });
 
