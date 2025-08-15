@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "ids": "^1.0.0",
-    "min-dash": "^4.0.0"
+    "min-dash": "^4.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
