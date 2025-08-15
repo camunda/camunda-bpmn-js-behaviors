@@ -5,10 +5,12 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 ## Unreleased
 
 ___Note:__ Yet to be released changes appear here._
+
 ## 1.11.0
 
 * `FEAT`: clean up ad-hoc subprocess when implementation type is changed ([#104](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/104))
 * `DEPS`: update to `zeebe-bpmn-moddle@1.11.0`
+* `DEPS`: update to `min-dash@4.2.3`
 
 ## 1.10.2
 
