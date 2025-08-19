@@ -28,15 +28,14 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
 
       const businessObject = getBusinessObject(element),
             extensionElements = businessObject.get('extensionElements'),
-            taskDefinition = bpmnFactory.create('zeebe:TaskDefinition', { });
-
-      taskDefinition.$parent = extensionElements;
+            taskDefinition = bpmnFactory.create('zeebe:TaskDefinition');
 
       // when
-      const values = extensionElements.get('values').concat(taskDefinition);
-
       modeling.updateModdleProperties(element, extensionElements, {
-        values
+        values: [
+          ...extensionElements.get('values'),
+          taskDefinition
+        ]
       });
     }));
 
@@ -47,7 +46,6 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
       const bo = getBusinessObject(element);
       expect(bo.get('completionCondition')).to.not.exist;
       expect(bo.get('cancelRemainingInstances')).not.to.exist;
-
 
       const adHoc = getAdHoc(element);
       expect(adHoc).to.exist;
