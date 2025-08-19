@@ -46,7 +46,7 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
       // then
       const bo = getBusinessObject(element);
       expect(bo.get('completionCondition')).to.not.exist;
-      expect(bo.get('cancelRemainingInstances')).to.be.false;
+      expect(bo.get('cancelRemainingInstances')).not.to.exist;
 
 
       const adHoc = getAdHoc(element);
@@ -84,7 +84,7 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
       // then
       const bo = getBusinessObject(element);
       expect(bo.get('completionCondition')).to.not.exist;
-      expect(bo.get('cancelRemainingInstances')).to.be.false;
+      expect(bo.get('cancelRemainingInstances')).not.to.exist;
 
       const adHoc = getAdHoc(element);
       expect(adHoc).to.exist;
