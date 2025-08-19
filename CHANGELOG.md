@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.11.1
+
+* `FIX`: remove `bpmn:cancelRemainingInstances` when adding `zeebe:TaskDefinition` ([#106](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/106))
+* `DEPS`: update to `bpmn-js@18.6.3`
+
 ## 1.11.0
 
 * `FEAT`: clean up ad-hoc subprocess when implementation type is changed ([#104](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/104))
