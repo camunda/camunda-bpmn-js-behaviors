@@ -49,7 +49,7 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
 
       const adHoc = getAdHoc(element);
       expect(adHoc).to.exist;
-      expect(adHoc.get('activeElementsCollection')).not.to.exist;
+      expect(adHoc.get('activeElementsCollection')).to.not.exist;
       expect(adHoc.get('outputCollection')).to.equal('=results');
       expect(adHoc.get('outputElement')).to.equal('result');
     });
@@ -86,7 +86,7 @@ describe('camunda-cloud/features/modeling - CleanUpAdHocSubProcessBehavior', fun
 
       const adHoc = getAdHoc(element);
       expect(adHoc).to.exist;
-      expect(adHoc.get('activeElementsCollection')).not.to.exist;
+      expect(adHoc.get('activeElementsCollection')).to.not.exist;
       expect(adHoc.get('outputCollection')).to.equal('=results');
       expect(adHoc.get('outputElement')).to.equal('result');
     }));
