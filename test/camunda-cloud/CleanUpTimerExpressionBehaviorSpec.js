@@ -78,6 +78,52 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
         expect(timerEventDefinition.get('timeCycle')).not.to.exist;
       }
     ));
+
+    describe('with non-interrupting of the same type (in subprocess)', function() {
+
+      it('should copy timeDate', inject(
+        function(elementRegistry, bpmnReplace) {
+
+          // given
+          let startEvent = elementRegistry.get('StartEventDate');
+
+          // when
+          bpmnReplace.replaceElement(startEvent, {
+            type: 'bpmn:StartEvent',
+            eventDefinitionType: 'bpmn:TimerEventDefinition',
+            isInterrupting: false
+          });
+
+          // then
+          startEvent = elementRegistry.get('StartEventDate');
+          const timerEventDefinition = getTimerEventDefinition(startEvent);
+
+          expect(timerEventDefinition.get('timeDate')).to.exist;
+        }
+      ));
+
+
+      it('should copy timeDuration', inject(
+        function(elementRegistry, bpmnReplace) {
+
+          // given
+          let startEvent = elementRegistry.get('StartEventDuration');
+
+          // when
+          bpmnReplace.replaceElement(startEvent, {
+            type: 'bpmn:StartEvent',
+            eventDefinitionType: 'bpmn:TimerEventDefinition',
+            isInterrupting: false
+          });
+
+          // then
+          startEvent = elementRegistry.get('StartEventDuration');
+          const timerEventDefinition = getTimerEventDefinition(startEvent);
+
+          expect(timerEventDefinition.get('timeDuration')).to.exist;
+        }
+      ));
+    });
   });
 
 
