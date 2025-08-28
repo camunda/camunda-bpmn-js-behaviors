@@ -53,6 +53,24 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
       }
     ));
 
+
+    it('should remove timeDuration when start event is moved out of event subprocess', inject(
+      function(elementRegistry, modeling) {
+
+        // given
+        const startEvent = elementRegistry.get('StartEventDuration'),
+              root = elementRegistry.get('Process');
+
+        // when
+        modeling.moveElements([ startEvent ], { x: 0, y: 0 }, root);
+
+        // then
+        const timerEventDefinition = getTimerEventDefinition(startEvent);
+
+        expect(timerEventDefinition.get('timeDuration')).not.to.exist;
+      }
+    ));
+
   });
 
 
