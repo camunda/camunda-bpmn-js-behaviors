@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_adhoc" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.11.0">
   <bpmn:process id="Process_AdHoc" isExecutable="true">
-    <bpmn:adHocSubProcess id="AdHocSubProcess_1" name="AdHocSubProcess_1" cancelRemainingInstances="true">
+    <bpmn:adHocSubProcess id="AdHocSubProcess_1" name="AdHocSubProcess_1" cancelRemainingInstances="false">
       <bpmn:extensionElements>
         <zeebe:adHoc activeElementsCollection="=items" outputCollection="=results" outputElement="result" />
       </bpmn:extensionElements>
