@@ -8,6 +8,10 @@ import {
   is
 } from 'bpmn-js/lib/util/ModelUtil';
 
+import {
+  find
+} from 'min-dash';
+
 import diagramXML from './process-timer.bpmn';
 
 
@@ -27,6 +31,24 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
 
         // when
         modeling.moveElements([ startEvent ], { x: eventSubprocess.x + 20, y: eventSubprocess.y + 20 }, eventSubprocess);
+
+        // then
+        const timerEventDefinition = getTimerEventDefinition(startEvent);
+
+        expect(timerEventDefinition.get('timeCycle')).not.to.exist;
+      }
+    ));
+
+
+    it('should remove timeCycle when moving start event into process', inject(
+      function(elementRegistry, modeling) {
+
+        // given
+        const startEvent = elementRegistry.get('StartEventCycle');
+        const subprocess = elementRegistry.get('EventSubProcess');
+
+        // when
+        modeling.moveElements([ startEvent ], { x: startEvent.x + 20, y: startEvent.y + 20 }, subprocess);
 
         // then
         const timerEventDefinition = getTimerEventDefinition(startEvent);
@@ -181,6 +203,66 @@ describe('camunda-cloud/features/modeling - CleanUpTimerExpressionBehavior', fun
         // then
         timerEventDefinition = getTimerEventDefinition(boundaryEvent);
         expect(timerEventDefinition.get('timeCycle')).not.to.exist;
+      }
+    ));
+
+  });
+
+
+  describe('copy paste', function() {
+
+    it('should remove timeDuration when copying start event out of event subprocess', inject(
+      function(elementRegistry, copyPaste) {
+
+        // given
+        const startEvent = elementRegistry.get('StartEventDuration'),
+              root = elementRegistry.get('Process');
+
+        // when
+        copyPaste.copy(startEvent);
+
+        const elements = copyPaste.paste({
+          element: root,
+          point: {
+            x: 1000,
+            y: 1000
+          }
+        });
+
+        // then
+        const pastedEvent = find(elements, (element) => is(element, 'bpmn:StartEvent'));
+
+        const timerEventDefinition = getTimerEventDefinition(pastedEvent);
+
+        expect(timerEventDefinition.get('timeDuration')).not.to.exist;
+      }
+    ));
+
+
+    it('should NOT remove timeDuration when copying start event in event subprocess', inject(
+      function(elementRegistry, copyPaste) {
+
+        // given
+        const startEvent = elementRegistry.get('StartEventDuration');
+        const subprocess = elementRegistry.get('EventSubProcess');
+
+        // when
+        copyPaste.copy(startEvent);
+
+        const elements = copyPaste.paste({
+          element: subprocess,
+          point: {
+            x: 1000,
+            y: 1000
+          }
+        });
+
+        // then
+        const pastedEvent = find(elements, (element) => is(element, 'bpmn:StartEvent'));
+
+        const timerEventDefinition = getTimerEventDefinition(pastedEvent);
+
+        expect(timerEventDefinition.get('timeDuration')).to.exist;
       }
     ));
 
