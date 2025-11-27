@@ -37,14 +37,14 @@ describe('camunda-cloud/features/modeling - CallActivityVariablesPropagationBeha
       }));
 
 
-      it('should execute', inject(function() {
+      it('should execute', function() {
 
         // then
         const outputParameters = getOutputParameters(element);
 
         expect(outputParameters).to.exist;
         expect(outputParameters).to.be.empty;
-      }));
+      });
 
 
       it('should undo', inject(function(commandStack) {
@@ -73,6 +73,25 @@ describe('camunda-cloud/features/modeling - CallActivityVariablesPropagationBeha
         expect(outputParameters).to.be.empty;
       }));
 
+    });
+
+
+    describe('integration', function() {
+
+      it('should NOT fail when no outputs are defined', inject(function(elementRegistry, modeling) {
+
+        // given
+        const element = elementRegistry.get('CallActivity_2');
+
+        // when
+        modeling.updateModdleProperties(element, getCalledElement(element), { [ key ]: true });
+
+        // then
+        const outputParameters = getOutputParameters(element);
+
+        expect(outputParameters).to.exist;
+        expect(outputParameters).to.be.empty;
+      }));
     });
   });
 });
