@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.12.0
+
+* `FEAT`: add `OrderExtensionElementsBehavior` for Camunda Platform ([#113](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/113))
+* `FEAT`: add `CallActivityVariablesPropagationBehavior` ([#112](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/112))
+
 ## 1.11.3
 
 * `FIX`: keep timer duration when timer event is replaced ([#107](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/107))
