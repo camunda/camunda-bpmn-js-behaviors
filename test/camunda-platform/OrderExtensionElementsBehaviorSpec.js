@@ -4,7 +4,8 @@ import {
 } from 'test/TestHelper';
 
 import {
-  getBusinessObject
+  getBusinessObject,
+  is
 } from 'bpmn-js/lib/util/ModelUtil';
 
 import diagramXML from './camunda-call-activity.bpmn';
@@ -15,7 +16,7 @@ describe('OrderExtensionElementsBehavior', function() {
 
   beforeEach(bootstrapCamundaPlatformModeler(diagramXML));
 
-  it('should reorder extension elements',
+  it('should trigger on element.updateModdleProperties',
     inject(function(elementRegistry, modeling, bpmnFactory) {
 
       // given
@@ -43,20 +44,64 @@ describe('OrderExtensionElementsBehavior', function() {
       // then
       const updatedExtensionElements = businessObject.get('extensionElements').get('values');
 
+      expect(is(updatedExtensionElements[0], 'camunda:In')).to.be.true;
       expect(updatedExtensionElements[0]).to.have.property('variables', 'all');
-      expect(updatedExtensionElements[0]).to.have.property('$type', 'camunda:In');
 
+      expect(is(updatedExtensionElements[1], 'camunda:In')).to.be.true;
       expect(updatedExtensionElements[1]).to.have.property('source', 'in');
 
+      expect(is(updatedExtensionElements[2], 'camunda:Out')).to.be.true;
       expect(updatedExtensionElements[2]).to.have.property('variables', 'all');
-      expect(updatedExtensionElements[2]).to.have.property('$type', 'camunda:Out');
 
+      expect(is(updatedExtensionElements[3], 'camunda:Out')).to.be.true;
       expect(updatedExtensionElements[3]).to.have.property('source', 'out');
     })
   );
 
 
-  it('should not update extension elements if already ordered',
+  it('should trigger on element.updateProperties',
+    inject(function(elementRegistry, modeling, bpmnFactory) {
+
+      // given
+      const callActivity = elementRegistry.get('CallActivity_1');
+      const businessObject = getBusinessObject(callActivity);
+
+      // when
+      const extensionElements = businessObject.get('extensionElements');
+
+      const ioElements = [
+        { type: 'camunda:Out', target: 'foo', source: 'out' },
+        { type: 'camunda:In', target: 'bar', source: 'in' },
+        { type: 'camunda:Out', variables: 'all' },
+        { type: 'camunda:In', variables: 'all' }
+      ];
+
+      addExtensionElements(extensionElements, bpmnFactory, ioElements);
+
+      modeling.updateProperties(
+        callActivity,
+        extensionElements
+      );
+
+      // then
+      const updatedExtensionElements = businessObject.get('extensionElements').get('values');
+
+      expect(is(updatedExtensionElements[0], 'camunda:In')).to.be.true;
+      expect(updatedExtensionElements[0]).to.have.property('variables', 'all');
+
+      expect(is(updatedExtensionElements[1], 'camunda:In')).to.be.true;
+      expect(updatedExtensionElements[1]).to.have.property('source', 'in');
+
+      expect(is(updatedExtensionElements[2], 'camunda:Out')).to.be.true;
+      expect(updatedExtensionElements[2]).to.have.property('variables', 'all');
+
+      expect(is(updatedExtensionElements[3], 'camunda:Out')).to.be.true;
+      expect(updatedExtensionElements[3]).to.have.property('source', 'out');
+    })
+  );
+
+
+  it('should not call updateModdleProperties if order did not change',
     inject(function(elementRegistry, modeling, bpmnFactory) {
 
       // given
