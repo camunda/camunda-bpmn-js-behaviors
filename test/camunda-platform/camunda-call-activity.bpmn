@@ -4,11 +4,21 @@
     <bpmn:callActivity id="CallActivity_1" name="CallActivity_1">
       <bpmn:extensionElements />
     </bpmn:callActivity>
+    <bpmn:callActivity id="CallActivity_EMPTY" name="CallActivity_EMPTY" />
+    <bpmn:task id="Task_EMPTY" name="Task_EMPTY" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1dr914y">
       <bpmndi:BPMNShape id="Activity_1cu4tfd_di" bpmnElement="CallActivity_1">
         <dc:Bounds x="160" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CallActivity_EMPTY_di" bpmnElement="CallActivity_EMPTY">
+        <dc:Bounds x="160" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EMPTY_di" bpmnElement="Task_EMPTY">
+        <dc:Bounds x="160" y="280" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
