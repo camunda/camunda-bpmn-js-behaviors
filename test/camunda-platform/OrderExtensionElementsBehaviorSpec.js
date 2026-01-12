@@ -134,6 +134,42 @@ describe('OrderExtensionElementsBehavior', function() {
     })
   );
 
+
+  it('should not fail if no extension elements are present', inject(function(elementRegistry, modeling) {
+
+    // given
+    const callActivity = elementRegistry.get('CallActivity_EMPTY');
+    const businessObject = getBusinessObject(callActivity);
+
+    // when
+    modeling.updateModdleProperties(
+      callActivity,
+      businessObject,
+      { name: 'New name' }
+    );
+
+    // then
+    expect(businessObject.get('name')).to.eql('New name');
+  })
+  );
+
+
+  it('should not fail for non-call activity', inject(function(elementRegistry, modeling) {
+
+    // given
+    const task = elementRegistry.get('Task_EMPTY');
+    const businessObject = getBusinessObject(task);
+
+    // when
+    modeling.updateModdleProperties(
+      task,
+      businessObject,
+      { name: 'New name' }
+    );
+
+    // then
+    expect(businessObject.get('name')).to.eql('New name');
+  }));
 });
 
 function addExtensionElements(extensionElements, bpmnFactory, elements) {
