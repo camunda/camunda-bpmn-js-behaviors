@@ -1,6 +1,6 @@
 import CopyPasteBehavior from '../../lib/camunda-platform/CopyPasteBehavior';
 
-import BpmnModdle from 'bpmn-moddle';
+import { BpmnModdle } from 'bpmn-moddle';
 
 import camundaDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 

@@ -1,6 +1,6 @@
 import CopyPasteBehavior from '../../lib/camunda-cloud/CopyPasteBehavior';
 
-import BpmnModdle from 'bpmn-moddle';
+import { BpmnModdle } from 'bpmn-moddle';
 
 import zeebeDescriptor from 'zeebe-bpmn-moddle/resources/zeebe.json';
 
