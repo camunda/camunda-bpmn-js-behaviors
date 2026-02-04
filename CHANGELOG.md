@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.13.0
+
+* `DEPS`: update to `min-dash@5.0.0`
+* `DEPS`: update to `ids@3.0.0`
+
 ## 1.12.1
 
 * `FIX`: fix crash when call activity without extension elements is used in Camunda 7 ([#114](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/114))
