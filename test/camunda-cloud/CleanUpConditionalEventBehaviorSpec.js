@@ -60,6 +60,29 @@ describe('camunda-cloud/features/modeling - CleanUpConditionalEventBehavior', fu
   ));
 
 
+  it('should keep variableEvents when moving intermediate catch event', inject(
+    function(elementRegistry, modeling) {
+
+      // given
+      const event = elementRegistry.get('RootConditionalEvent'),
+            process = elementRegistry.get('Process_1');
+
+      // assume
+      const conditionalFilterBefore = getConditionalFilter(event);
+      expect(conditionalFilterBefore).to.exist;
+      expect(conditionalFilterBefore.get('variableEvents')).to.equal('create,update');
+
+      // when
+      modeling.moveElements([ event ], { x: 0, y: 10 }, process);
+
+      // then
+      const conditionalFilter = getConditionalFilter(event);
+      expect(conditionalFilter).to.exist;
+      expect(conditionalFilter.get('variableEvents')).to.equal('create,update');
+    }
+  ));
+
+
   describe('undo/redo', function() {
 
     it('should undo removal of variableEvents', inject(
