@@ -9,24 +9,22 @@
         <bpmn:condition xsi:type="bpmn:tFormalExpression">=orderTotal > 100</bpmn:condition>
       </bpmn:conditionalEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:subProcess id="SubProcess_1" name="SubProcess">
-      <bpmn:intermediateCatchEvent id="NestedConditionalEvent" name="Nested Conditional Event">
-        <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_Nested">
-          <bpmn:extensionElements>
+    <bpmn:intermediateCatchEvent id="RootConditionalEventNoVariableEvents" name="Root No VariableEvents">
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_NoVarEvents">
+        <bpmn:extensionElements />
+        <bpmn:condition xsi:type="bpmn:tFormalExpression">=amount &gt; 50</bpmn:condition>
+      </bpmn:conditionalEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:subProcess id="SubProcess_1" name="SubProcess" triggeredByEvent="true">
+      <bpmn:startEvent id="NestedConditionalEvent" name="Nested Conditional Event">
+        <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_0147kib">
+        <bpmn:extensionElements>
             <zeebe:conditionalFilter variableNames="status" variableEvents="create,update" />
           </bpmn:extensionElements>
           <bpmn:condition xsi:type="bpmn:tFormalExpression">=status = "approved"</bpmn:condition>
         </bpmn:conditionalEventDefinition>
-      </bpmn:intermediateCatchEvent>
+      </bpmn:startEvent>
     </bpmn:subProcess>
-    <bpmn:intermediateCatchEvent id="RootConditionalEventNoVariableEvents" name="Root No VariableEvents">
-      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_NoVarEvents">
-        <bpmn:extensionElements>
-          <zeebe:conditionalFilter variableNames="amount" />
-        </bpmn:extensionElements>
-        <bpmn:condition xsi:type="bpmn:tFormalExpression">=amount > 50</bpmn:condition>
-      </bpmn:conditionalEventDefinition>
-    </bpmn:intermediateCatchEvent>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
@@ -36,20 +34,19 @@
           <dc:Bounds x="160" y="145" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SubProcess_1_di" bpmnElement="SubProcess_1" isExpanded="true">
-        <dc:Bounds x="270" y="60" width="350" height="200" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="NestedConditionalEvent_di" bpmnElement="NestedConditionalEvent">
-        <dc:Bounds x="372" y="142" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="347" y="185" width="87" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="RootConditionalEventNoVariableEvents_di" bpmnElement="RootConditionalEventNoVariableEvents">
         <dc:Bounds x="672" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="654" y="145" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1g1nyp2_di" bpmnElement="SubProcess_1" isExpanded="true">
+        <dc:Bounds x="270" y="60" width="350" height="200" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0k15r57_di" bpmnElement="NestedConditionalEvent">
+        <dc:Bounds x="372" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="347" y="185" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
