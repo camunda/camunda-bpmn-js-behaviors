@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.14.0
+
+* `FEAT`: add `CleanUpConditionalEventBehavior` for Camunda 8 ([#118](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/118))
+
 ## 1.13.0
 
 * `DEPS`: update to `min-dash@5.0.0`
