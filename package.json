@@ -1,6 +1,6 @@
 {
   "name": "camunda-bpmn-js-behaviors",
-  "version": "1.14.0",
+  "version": "1.14.1",
   "description": "Camunda Platform 7 and 8 behaviors for bpmn-js",
   "main": "lib/index.js",
   "scripts": {
