@@ -28,7 +28,7 @@ jobs:
       run: npm run all
     - name: Import Secrets
       id: secrets
-      uses: hashicorp/vault-action@v3.0.0
+      uses: hashicorp/vault-action@v3.4.0
       with:
         url: ${{ secrets.VAULT_ADDR }}
         method: approle
