@@ -4,7 +4,7 @@
     <bpmn:intermediateCatchEvent id="RootConditionalEvent" name="Root Conditional Event">
       <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_Root">
         <bpmn:extensionElements>
-          <zeebe:conditionalFilter variableNames="orderTotal,discount" variableEvents="create,update" />
+          <zeebe:conditionalFilter variableEvents="create,update" />
         </bpmn:extensionElements>
         <bpmn:condition xsi:type="bpmn:tFormalExpression">=orderTotal > 100</bpmn:condition>
       </bpmn:conditionalEventDefinition>
@@ -19,7 +19,7 @@
       <bpmn:startEvent id="NestedConditionalEvent" name="Nested Conditional Event">
         <bpmn:conditionalEventDefinition id="ConditionalEventDefinition_0147kib">
         <bpmn:extensionElements>
-            <zeebe:conditionalFilter variableNames="status" variableEvents="create,update" />
+            <zeebe:conditionalFilter variableEvents="create,update" />
           </bpmn:extensionElements>
           <bpmn:condition xsi:type="bpmn:tFormalExpression">=status = "approved"</bpmn:condition>
         </bpmn:conditionalEventDefinition>

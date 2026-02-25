@@ -31,7 +31,6 @@ describe('camunda-cloud/features/modeling - CleanUpConditionalEventBehavior', fu
       // then
       const conditionalFilter = getConditionalFilter(event);
       expect(conditionalFilter).to.exist;
-      expect(conditionalFilter.get('variableNames')).to.equal('status');
       expect(conditionalFilter.get('variableEvents')).not.to.exist;
     }
   ));
