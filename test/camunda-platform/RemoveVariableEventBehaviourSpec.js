@@ -75,6 +75,32 @@ describe('RemoveVariableEventBehaviour', function() {
     });
 
 
+    describe('when label of named conditional startEvent is moved within event subprocess', function() {
+
+      it('should maintain variableEvents property', inject(function(elementRegistry, modeling) {
+
+        // given
+        const startEvent = elementRegistry.get('startEvent_1'),
+              startBusinessObject = getBusinessObject(startEvent),
+              eventDefinitions = startBusinessObject.get('eventDefinitions');
+
+        // assume
+        eventDefinitions.forEach(def => {
+          expect(def.get('camunda:variableEvents')).to.not.be.undefined;
+        });
+
+        // when
+        modeling.moveShape(startEvent.label, { x: 10, y: 10 });
+
+        // then
+        eventDefinitions.forEach(eventDefinition => {
+          expect(eventDefinition.get('camunda:variableEvents')).to.not.be.undefined;
+        });
+      }));
+
+    });
+
+
     describe('when conditional startEvent with variableEvents property is created out of event subprocess', function() {
 
       it('should not have variableEvents property', inject(function(canvas, modeling, bpmnFactory) {
