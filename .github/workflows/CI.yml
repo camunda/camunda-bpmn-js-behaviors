@@ -38,7 +38,7 @@ jobs:
         secrets: |
           secret/data/products/desktop-modeler/camunda/camunda-bpmn-js-behaviors CODECOV_TOKEN;
     - name: Upload coverage
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
       with:
         fail_ci_if_error: true
       env:
