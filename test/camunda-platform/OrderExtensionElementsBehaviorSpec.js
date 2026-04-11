@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import {
   bootstrapCamundaPlatformModeler,
   inject
@@ -8,9 +10,10 @@ import {
   is
 } from 'bpmn-js/lib/util/ModelUtil';
 
+import * as sinon from 'sinon';
+
 import diagramXML from './camunda-call-activity.bpmn';
 
-/* global sinon */
 
 describe('OrderExtensionElementsBehavior', function() {
 
