@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import { bootstrapCamundaCloudModeler, inject } from 'test/TestHelper';
 
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';

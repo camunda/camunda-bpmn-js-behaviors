@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import CopyPasteBehavior from '../../lib/camunda-cloud/CopyPasteBehavior';
 
 import { BpmnModdle } from 'bpmn-moddle';

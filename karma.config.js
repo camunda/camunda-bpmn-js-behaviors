@@ -24,8 +24,7 @@ module.exports = function(karma) {
 
     frameworks: [
       'webpack',
-      'mocha',
-      'sinon-chai'
+      'mocha'
     ],
 
     files: [
@@ -58,6 +57,10 @@ module.exports = function(karma) {
           {
             test: /\.(css|bpmn)$/,
             type: 'asset/source'
+          },
+          {
+            test: /test\/globals\.js$/,
+            sideEffects: true
           }
         ].concat(
           coverage ? {
