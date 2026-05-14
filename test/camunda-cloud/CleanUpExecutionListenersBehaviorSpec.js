@@ -207,7 +207,156 @@ describe('camunda-cloud/features/modeling - CleanUpExecutionListenersBehavior', 
       expect(extensionElements.get('values')).to.have.lengthOf(1);
     }));
   });
+
+
+  describe('remove `beforeAll` listeners when multi-instance is removed', function() {
+
+    it('should remove `beforeAll` and keep `start` / `end`',
+      inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+
+        // when
+        modeling.updateProperties(el, { loopCharacteristics: undefined });
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(2);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'start', 'end' ]);
+      })
+    );
+
+
+    it('should remove `beforeAll` when multi-instance is removed via `updateModdleProperties`',
+      inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+        const bo = getBusinessObject(el);
+
+        // when
+        modeling.updateModdleProperties(el, bo, { loopCharacteristics: undefined });
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(2);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'start', 'end' ]);
+      })
+    );
+
+
+    it('should remove the listeners container when only `beforeAll` was present',
+      inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask_OnlyBeforeAll');
+
+        // when
+        modeling.updateProperties(el, { loopCharacteristics: undefined });
+
+        // then
+        const container = getExecutionListenersContainer(el);
+        expect(container).not.to.exist;
+      })
+    );
+
+
+    it('should undo',
+      inject(function(elementRegistry, modeling, commandStack) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+
+        // when
+        modeling.updateProperties(el, { loopCharacteristics: undefined });
+        commandStack.undo();
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(3);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'beforeAll', 'start', 'end' ]);
+      })
+    );
+
+
+    it('should redo',
+      inject(function(elementRegistry, modeling, commandStack) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+
+        // when
+        modeling.updateProperties(el, { loopCharacteristics: undefined });
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(2);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'start', 'end' ]);
+      })
+    );
+
+
+    it('should NOT remove `beforeAll` when new loopCharacteristics is also multi-instance',
+      inject(function(elementRegistry, modeling, bpmnFactory) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+        const loopCharacteristics = bpmnFactory.create('bpmn:MultiInstanceLoopCharacteristics', { isSequential: true });
+
+        // when
+        modeling.updateProperties(el, { loopCharacteristics });
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(3);
+      })
+    );
+
+
+    it('should NOT remove `beforeAll` when updating loopCharacteristics properties',
+      inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+        const bo = getBusinessObject(el);
+
+        // when
+        modeling.updateModdleProperties(el, bo.get('loopCharacteristics'), { isSequential: true });
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(3);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'beforeAll', 'start', 'end' ]);
+      })
+    );
+  });
+
+
+  it('should keep `beforeAll` when MI task is replaced with another MI-capable type',
+    inject(function(bpmnReplace, elementRegistry) {
+
+      // given
+      const el = elementRegistry.get('MultiInstanceTask');
+
+      // when
+      bpmnReplace.replaceElement(el, { type: 'bpmn:UserTask' });
+
+      // then
+      const replaced = elementRegistry.get('MultiInstanceTask');
+      const listeners = getListeners(replaced);
+      expect(listeners).to.have.lengthOf(3);
+      expect(listeners.map(l => l.get('eventType'))).to.eql([ 'beforeAll', 'start', 'end' ]);
+    })
+  );
 });
+
+function getListeners(element) {
+  const container = getExecutionListenersContainer(element);
+  return (container && container.get('listeners')) || [];
+}
 
 function getExecutionListenersContainer(element) {
   return getExtensionElementsList(getBusinessObject(element), 'zeebe:ExecutionListeners')[0];

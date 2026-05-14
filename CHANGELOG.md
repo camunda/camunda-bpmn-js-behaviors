@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.15.0
+
+* `FEAT`: add cleanup for `beforeAll` execution listeners when multi-instance is removed ([#126](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/126))
+
 ## 1.14.1
 
 * `FIX`: do not clear Variable Events on boundary events ([#120](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/120))

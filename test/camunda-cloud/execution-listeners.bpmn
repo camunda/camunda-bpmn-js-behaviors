@@ -82,6 +82,24 @@
       </bpmn:extensionElements>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0jqwplw" />
     </bpmn:boundaryEvent>
+    <bpmn:serviceTask id="MultiInstanceTask">
+      <bpmn:extensionElements>
+        <zeebe:executionListeners>
+          <zeebe:executionListener eventType="beforeAll" retries="3" type="mi-body-init" />
+          <zeebe:executionListener eventType="start" retries="3" type="mi-entry-start" />
+          <zeebe:executionListener eventType="end" retries="3" type="mi-entry-end" />
+        </zeebe:executionListeners>
+      </bpmn:extensionElements>
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="MultiInstanceTask_OnlyBeforeAll">
+      <bpmn:extensionElements>
+        <zeebe:executionListeners>
+          <zeebe:executionListener eventType="beforeAll" retries="3" type="mi-body-init" />
+        </zeebe:executionListeners>
+      </bpmn:extensionElements>
+      <bpmn:multiInstanceLoopCharacteristics />
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process">
@@ -111,6 +129,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BoundaryEvent_di" bpmnElement="BoundaryEvent">
         <dc:Bounds x="492" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="MultiInstanceTask_di" bpmnElement="MultiInstanceTask">
+        <dc:Bounds x="580" y="400" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="MultiInstanceTask_OnlyBeforeAll_di" bpmnElement="MultiInstanceTask_OnlyBeforeAll">
+        <dc:Bounds x="720" y="400" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
