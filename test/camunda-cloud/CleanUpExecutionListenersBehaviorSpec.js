@@ -314,6 +314,24 @@ describe('camunda-cloud/features/modeling - CleanUpExecutionListenersBehavior', 
         expect(listeners).to.have.lengthOf(3);
       })
     );
+
+
+    it('should NOT remove `beforeAll` when updating loopCharacteristics properties',
+      inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('MultiInstanceTask');
+        const bo = getBusinessObject(el);
+
+        // when
+        modeling.updateModdleProperties(el, bo.get('loopCharacteristics'), { isSequential: true });
+
+        // then
+        const listeners = getListeners(el);
+        expect(listeners).to.have.lengthOf(3);
+        expect(listeners.map(l => l.get('eventType'))).to.eql([ 'beforeAll', 'start', 'end' ]);
+      })
+    );
   });
 
 
