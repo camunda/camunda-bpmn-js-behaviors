@@ -1006,6 +1006,61 @@ describe('CopyPasteBehavior', function() {
 
   });
 
+
+  describe('zeebe:FormDefinition', function() {
+
+    it('should allow on bpmn:StartEvent', function() {
+
+      // given
+      const formDefinition = moddle.create('zeebe:FormDefinition'),
+            startEvent = moddle.create('bpmn:StartEvent'),
+            extensionElements = moddle.create('bpmn:ExtensionElements');
+
+      extensionElements.$parent = startEvent;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(formDefinition, extensionElements);
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should allow on bpmn:UserTask', function() {
+
+      // given
+      const formDefinition = moddle.create('zeebe:FormDefinition'),
+            userTask = moddle.create('bpmn:UserTask'),
+            extensionElements = moddle.create('bpmn:ExtensionElements');
+
+      extensionElements.$parent = userTask;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(formDefinition, extensionElements);
+
+      // then
+      expect(canCopyProperty).not.to.be.false;
+    });
+
+
+    it('should not allow on bpmn:ServiceTask', function() {
+
+      // given
+      const formDefinition = moddle.create('zeebe:FormDefinition'),
+            serviceTask = moddle.create('bpmn:ServiceTask'),
+            extensionElements = moddle.create('bpmn:ExtensionElements');
+
+      extensionElements.$parent = serviceTask;
+
+      // when
+      const canCopyProperty = copyPasteBehavior.canCopyProperty(formDefinition, extensionElements);
+
+      // then
+      expect(canCopyProperty).to.be.false;
+    });
+
+  });
+
 });
 
 
