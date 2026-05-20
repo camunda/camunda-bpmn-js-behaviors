@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+* `FEAT`: add start event from cleanup on element delete, replace, copy/paste or move from the root ([#127](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/127))
+* `DEPS`: update to `zeebe-bpmn-moddle@1.14.0`
+
+
 ## 1.15.0
 
 * `FEAT`: add cleanup for `beforeAll` execution listeners when multi-instance is removed ([#126](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/126))
