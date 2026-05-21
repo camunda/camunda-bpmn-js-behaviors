@@ -21,9 +21,15 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNShape id="StartEvent_Linked_di" bpmnElement="StartEvent_Linked">
         <dc:Bounds x="160" y="80" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="148" y="123" width="61" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_Embedded_di" bpmnElement="StartEvent_Embedded">
         <dc:Bounds x="220" y="80" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="199" y="123" width="79" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_NoForm_di" bpmnElement="StartEvent_NoForm">
         <dc:Bounds x="280" y="80" width="36" height="36" />
