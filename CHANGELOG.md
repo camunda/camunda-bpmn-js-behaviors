@@ -6,6 +6,10 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.16.1
+
+* `FIX`: fix start event form behavior with copy/paste ([#131](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/131))
+
 ## 1.16.0
 
 * `FEAT`: add start event from cleanup on element delete, replace, copy/paste or move from the root ([#127](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/127))
