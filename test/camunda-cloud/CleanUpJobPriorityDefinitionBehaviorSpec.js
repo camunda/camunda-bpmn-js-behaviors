@@ -175,6 +175,65 @@ describe('camunda-cloud/features/modeling - CleanUpJobPriorityDefinitionBehavior
   });
 
 
+  describe('ServiceTask morphed to another ZeebeServiceTask type', function() {
+
+    let newElement;
+
+    beforeEach(inject(function(bpmnReplace, elementRegistry) {
+
+      // given
+      const serviceTask = elementRegistry.get('ServiceTaskWithJobPriority');
+
+      // when
+      bpmnReplace.replaceElement(serviceTask, { type: 'bpmn:ScriptTask' });
+
+      newElement = elementRegistry.get('ServiceTaskWithJobPriority');
+    }));
+
+
+    it('should execute', inject(function() {
+
+      // then
+      const jobPriorityDefinition = getJobPriorityDefinition(newElement);
+
+      expect(jobPriorityDefinition).to.exist;
+      expect(jobPriorityDefinition.priority).to.equal('50');
+    }));
+
+
+    it('should undo', inject(function(commandStack, elementRegistry) {
+
+      // when
+      commandStack.undo();
+
+      newElement = elementRegistry.get('ServiceTaskWithJobPriority');
+
+      // then
+      const jobPriorityDefinition = getJobPriorityDefinition(newElement);
+
+      expect(jobPriorityDefinition).to.exist;
+      expect(jobPriorityDefinition.priority).to.equal('50');
+    }));
+
+
+    it('should undo/redo', inject(function(commandStack, elementRegistry) {
+
+      // when
+      commandStack.undo();
+      commandStack.redo();
+
+      newElement = elementRegistry.get('ServiceTaskWithJobPriority');
+
+      // then
+      const jobPriorityDefinition = getJobPriorityDefinition(newElement);
+
+      expect(jobPriorityDefinition).to.exist;
+      expect(jobPriorityDefinition.priority).to.equal('50');
+    }));
+
+  });
+
+
   describe('MessageEndEvent morphed to ErrorEndEvent', function() {
 
     let newElement;
