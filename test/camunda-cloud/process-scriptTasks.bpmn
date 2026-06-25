@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.20.0">
+  <bpmn:process id="Process_1" isExecutable="true">
+    <bpmn:scriptTask id="ScriptTask_jobWorker" name="ScriptTask_jobWorker">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="a" retries="3" />
+      </bpmn:extensionElements>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="ScriptTask_feelExpression" name="ScriptTask_feelExpression">
+      <bpmn:extensionElements>
+        <zeebe:script expression="= 1 + 1" resultVariable="result" />
+      </bpmn:extensionElements>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="Activity_jobWorker_di" bpmnElement="ScriptTask_jobWorker">
+        <dc:Bounds x="160" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_feelExpression_di" bpmnElement="ScriptTask_feelExpression">
+        <dc:Bounds x="350" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
