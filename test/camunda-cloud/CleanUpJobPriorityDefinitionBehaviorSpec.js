@@ -297,7 +297,7 @@ describe('camunda-cloud/features/modeling - CleanUpJobPriorityDefinitionBehavior
 
     let element;
 
-    beforeEach(inject(function(bpmnFactory, elementRegistry, modeling) {
+    beforeEach(inject(function(elementRegistry, modeling) {
 
       // given
       element = elementRegistry.get('BusinessRuleTaskWithJobPriority');
@@ -351,7 +351,7 @@ describe('camunda-cloud/features/modeling - CleanUpJobPriorityDefinitionBehavior
 
     let element;
 
-    beforeEach(inject(function(bpmnFactory, elementRegistry, modeling) {
+    beforeEach(inject(function(elementRegistry, modeling) {
 
       // given
       element = elementRegistry.get('BusinessRuleTaskWithJobPriority');
