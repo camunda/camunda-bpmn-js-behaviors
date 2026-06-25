@@ -269,7 +269,7 @@ describe('camunda-cloud/features/modeling - CreateZeebeScriptTaskBehavior', func
     }));
 
 
-    it('should NOT add zeebe:Script when replacing bpmn:ScriptTask with bpmn:ServiceTask', inject(function(
+    it('should NOT carry over zeebe:Script when replacing bpmn:ScriptTask with bpmn:ServiceTask', inject(function(
         elementRegistry,
         bpmnReplace,
         canvas,
@@ -278,15 +278,19 @@ describe('camunda-cloud/features/modeling - CreateZeebeScriptTaskBehavior', func
 
       // given
       const rootElement = canvas.getRootElement();
-      const task = modeling.createShape(
-        { type: 'bpmn:Task', id: 'simpleTask' },
+
+      // Create a ScriptTask — behavior adds zeebe:Script automatically
+      const scriptTask = modeling.createShape(
+        { type: 'bpmn:ScriptTask', id: 'scriptTask' },
         { x: 100, y: 100 },
         rootElement
       );
-      bpmnReplace.replaceElement(task, { type: 'bpmn:ServiceTask' });
+
+      // when
+      bpmnReplace.replaceElement(scriptTask, { type: 'bpmn:ServiceTask' });
 
       // then
-      const updatedTask = elementRegistry.get(task.id),
+      const updatedTask = elementRegistry.get(scriptTask.id),
             script = getScript(updatedTask);
 
       expect(script).not.to.exist;

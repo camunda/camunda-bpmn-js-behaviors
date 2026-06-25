@@ -267,7 +267,7 @@ describe('camunda-cloud/features/modeling - CreateZeebeBusinessRuleTaskBehavior'
     }));
 
 
-    it('should NOT add zeebe:CalledDecision when replacing bpmn:BusinessRuleTask with bpmn:ServiceTask', inject(function(
+    it('should NOT carry over zeebe:CalledDecision when replacing bpmn:BusinessRuleTask with bpmn:ServiceTask', inject(function(
         elementRegistry,
         bpmnReplace,
         canvas,
@@ -276,15 +276,19 @@ describe('camunda-cloud/features/modeling - CreateZeebeBusinessRuleTaskBehavior'
 
       // given
       const rootElement = canvas.getRootElement();
-      const task = modeling.createShape(
-        { type: 'bpmn:Task', id: 'simpleTask' },
+
+      // Create a BusinessRuleTask — behavior adds zeebe:CalledDecision automatically
+      const businessRuleTask = modeling.createShape(
+        { type: 'bpmn:BusinessRuleTask', id: 'businessRuleTask' },
         { x: 100, y: 100 },
         rootElement
       );
-      bpmnReplace.replaceElement(task, { type: 'bpmn:ServiceTask' });
+
+      // when
+      bpmnReplace.replaceElement(businessRuleTask, { type: 'bpmn:ServiceTask' });
 
       // then
-      const updatedTask = elementRegistry.get(task.id),
+      const updatedTask = elementRegistry.get(businessRuleTask.id),
             calledDecision = getCalledDecision(updatedTask);
 
       expect(calledDecision).not.to.exist;
