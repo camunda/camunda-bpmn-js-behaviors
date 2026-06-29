@@ -6,6 +6,11 @@ All notable changes to [camunda-bpmn-js-behaviors](https://github.com/camunda/ca
 
 ___Note:__ Yet to be released changes appear here._
 
+## 1.18.0
+
+* `FEAT`: default `zeebe` script task to FEEL expression ([#136](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/136))
+* `FEAT`: default `zeebe` business rule task to DMN decision ([#136](https://github.com/camunda/camunda-bpmn-js-behaviors/pull/136))
+
 ## 1.17.0
 
 * `FEAT`: add job priority definition cleanup
