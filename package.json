@@ -4,8 +4,9 @@
   "description": "Camunda Platform 7 and 8 behaviors for bpmn-js",
   "main": "index.js",
   "scripts": {
-    "all": "run-s lint test",
+    "all": "run-s lint type-check test",
     "lint": "eslint .",
+    "type-check": "tsc --noEmit",
     "dev": "npm test -- --auto-watch --no-single-run",
     "test": "karma start karma.config.js"
   },
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
+    "@babel/preset-typescript": "^7.29.7",
     "babel-loader": "^10.0.0",
     "babel-plugin-istanbul": "^8.0.0",
     "bpmn-js": "^18.11.0",
@@ -62,6 +64,7 @@
     "puppeteer": "^25.0.0",
     "sinon": "^22.0.0",
     "sinon-chai": "^4.0.0",
+    "typescript": "^5.9.3",
     "webpack": "^5.101.2",
     "zeebe-bpmn-moddle": "^1.14.0"
   },

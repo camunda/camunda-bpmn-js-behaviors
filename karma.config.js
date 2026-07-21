@@ -59,6 +59,16 @@ module.exports = async function(karma) {
             type: 'asset/source'
           },
           {
+            test: /\.ts$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: [ '@babel/preset-typescript' ]
+              }
+            }
+          },
+          {
             test: /test\/globals\.js$/,
             sideEffects: true
           }
@@ -82,6 +92,7 @@ module.exports = async function(karma) {
         )
       },
       resolve: {
+        extensions: [ '.ts', '.js', '.json', '.wasm' ],
         modules: [
           'node_modules',
           absoluteBasePath

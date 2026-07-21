@@ -7,10 +7,15 @@ import { getPrefixedId } from '../../util/IdsUtil';
 
 import { getExtensionElementsList } from '../../util/ExtensionElementsUtil';
 
+import type { Element, ModdleElement, ModdleTypeMap } from 'bpmn-js/lib/model/Types';
+
 const FORM_KEY_PREFIX = 'camunda-forms:bpmn:',
       USER_TASK_FORM_ID_PREFIX = 'UserTaskForm_';
 
-export function getFormDefinition(element) {
+type FormDefinition = ModdleTypeMap['zeebe:FormDefinition'];
+type UserTaskForm = ModdleTypeMap['zeebe:UserTaskForm'];
+
+export function getFormDefinition(element: Element | ModdleElement): FormDefinition | undefined {
   const businessObject = getBusinessObject(element);
 
   const formDefinitions = getExtensionElementsList(businessObject, 'zeebe:FormDefinition');
@@ -18,7 +23,10 @@ export function getFormDefinition(element) {
   return formDefinitions[ 0 ];
 }
 
-export function getUserTaskForm(element, options = {}) {
+export function getUserTaskForm(
+    element: Element | ModdleElement,
+    options: { formKey?: string; rootElement?: ModdleElement } = {}
+): UserTaskForm | undefined {
   let {
     formKey,
     rootElement
@@ -43,26 +51,26 @@ export function getUserTaskForm(element, options = {}) {
   });
 }
 
-export function userTaskFormIdToFormKey(userTaskFormId) {
+export function userTaskFormIdToFormKey(userTaskFormId: string | undefined): string {
   return `${ FORM_KEY_PREFIX }${ userTaskFormId }`;
 }
 
-export function formKeyToUserTaskFormId(formKey) {
+export function formKeyToUserTaskFormId(formKey: string): string {
   return formKey.replace(FORM_KEY_PREFIX, '');
 }
 
-export function isUserTaskFormKey(formKey) {
-  return formKey && formKey.startsWith(FORM_KEY_PREFIX);
+export function isUserTaskFormKey(formKey: string | undefined): boolean {
+  return !!formKey && formKey.startsWith(FORM_KEY_PREFIX);
 }
 
-export function createUserTaskFormId() {
+export function createUserTaskFormId(): string {
   return getPrefixedId(USER_TASK_FORM_ID_PREFIX);
 }
 
-export function getRootElement(element) {
+export function getRootElement(element: Element | ModdleElement): ModdleElement {
   const businessObject = getBusinessObject(element);
 
-  let parent = businessObject;
+  let parent: ModdleElement = businessObject;
 
   while (parent.$parent && !is(parent, 'bpmn:Process')) {
     parent = parent.$parent;

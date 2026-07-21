@@ -17,20 +17,33 @@ import {
   userTaskFormIdToFormKey
 } from './util/FormsUtil';
 
+import type BpmnFactory from 'bpmn-js/lib/features/modeling/BpmnFactory';
+import type Modeling from 'bpmn-js/lib/features/modeling/Modeling';
+
+import type ElementRegistry from 'diagram-js/lib/core/ElementRegistry';
+import type EventBus from 'diagram-js/lib/core/EventBus';
+
+import type { Element, Shape, ModdleElement, ModdleTypeMap } from 'bpmn-js/lib/model/Types';
+
+type ExtensionElements = ModdleTypeMap['bpmn:ExtensionElements'];
 
 /**
  * Zeebe BPMN specific forms behavior.
  */
 export default class FormsBehavior extends CommandInterceptor {
-  constructor(bpmnFactory, elementRegistry, eventBus, modeling) {
+  static $inject: string[];
+
+  _modeling: Modeling;
+
+  constructor(bpmnFactory: BpmnFactory, elementRegistry: ElementRegistry, eventBus: EventBus, modeling: Modeling) {
     super(eventBus);
 
     this._modeling = modeling;
 
-    function removeUserTaskForm(element, moddleElement, userTaskForm) {
-      const extensionElements = moddleElement.get('extensionElements');
+    function removeUserTaskForm(element: Element, moddleElement: ModdleElement, userTaskForm: ModdleElement) {
+      const extensionElements: ExtensionElements = moddleElement.get('extensionElements');
 
-      const values = without(extensionElements.get('values'), userTaskForm);
+      const values = without(extensionElements.get('values') || [], userTaskForm);
 
       modeling.updateModdleProperties(element, extensionElements, {
         values
@@ -43,10 +56,10 @@ export default class FormsBehavior extends CommandInterceptor {
       }
     }
 
-    function removeFormDefinition(element, formDefinition) {
+    function removeFormDefinition(element: Element, formDefinition: ModdleElement) {
       const bo = getBusinessObject(element);
-      const extensionElements = bo.get('extensionElements');
-      const values = without(extensionElements.get('values'), formDefinition);
+      const extensionElements: ExtensionElements = bo.get('extensionElements');
+      const values = without(extensionElements.get('values') || [], formDefinition);
 
       modeling.updateModdleProperties(element, extensionElements, { values });
 
@@ -60,7 +73,11 @@ export default class FormsBehavior extends CommandInterceptor {
     /**
      * Remove zeebe:UserTaskForm on user task or start event removed.
      */
-    this.postExecute('shape.delete', function(context) {
+    this.postExecute('shape.delete', function(context: {
+      labelTarget?: Element;
+      oldParent: Element;
+      shape: Shape<unknown>;
+    }) {
       const {
         labelTarget,
         oldParent,
@@ -87,7 +104,13 @@ export default class FormsBehavior extends CommandInterceptor {
      * Clean up form definition when a start event is moved or pasted into
      * a subprocess (forms are only supported on root-level none start events).
      */
-    this.postExecuted([ 'shape.move', 'shape.create' ], function(event) {
+    this.postExecuted([ 'shape.move', 'shape.create' ], function(event: {
+      context: {
+        shape: Shape<unknown>;
+        newParent?: Element;
+        parent?: Element;
+      };
+    }) {
       const { context } = event;
       const { shape } = context;
       const parent = context.newParent || context.parent;
@@ -114,7 +137,9 @@ export default class FormsBehavior extends CommandInterceptor {
      * Clean up form definition when a none start event is replaced with
      * a typed start event (message, timer, signal, etc.).
      */
-    this.postExecuted('shape.replace', function(event) {
+    this.postExecuted('shape.replace', function(event: {
+      context: { newShape: Shape<unknown> };
+    }) {
       const { context } = event;
       const { newShape } = context;
 
@@ -145,7 +170,7 @@ export default class FormsBehavior extends CommandInterceptor {
      * is created that references existing zeebe:UserTaskForm that is already
      * referenced by existing element.
      */
-    this.postExecute('shape.create', function(context) {
+    this.postExecute('shape.create', function(context: { shape: Shape<unknown> }) {
       const { shape } = context;
 
       if (shape.labelTarget) {
@@ -175,9 +200,9 @@ export default class FormsBehavior extends CommandInterceptor {
 
         const formDefinition = getFormDefinition(element);
 
-        return formDefinition
-          && formDefinition.get('formKey')
-          && formKeyToUserTaskFormId(formDefinition.get('formKey')) === oldUserTaskForm.get('id');
+        const formKey = formDefinition && formDefinition.get('formKey');
+
+        return !!formKey && formKeyToUserTaskFormId(formKey) === oldUserTaskForm.get('id');
       });
 
       if (!isReferenced.length) {
@@ -233,7 +258,10 @@ export default class FormsBehavior extends CommandInterceptor {
      *
      * 1. zeebe:bindingType only exists if zeebe:formId is set (linked Camunda form)
      */
-    this.preExecute('element.updateModdleProperties', function(context) {
+    this.preExecute('element.updateModdleProperties', function(context: {
+      moddleElement: ModdleElement;
+      properties: Record<string, any>;
+    }) {
       const {
         moddleElement,
         properties
@@ -265,7 +293,12 @@ export default class FormsBehavior extends CommandInterceptor {
      * Clean up user task form after form key or definition is removed. Clean up
      * empty extension elements after form definition is removed.
      */
-    this.postExecute('element.updateModdleProperties', function(context) {
+    this.postExecute('element.updateModdleProperties', function(context: {
+      element: Element;
+      moddleElement: ModdleElement;
+      oldProperties: Record<string, any>;
+      properties: Record<string, any>;
+    }) {
       const {
         element,
         moddleElement,
@@ -283,7 +316,7 @@ export default class FormsBehavior extends CommandInterceptor {
           }
         }
       } else if (isExtensionElementRemoved(context, 'zeebe:FormDefinition')) {
-        const formDefinition = oldProperties.values.find(value => is(value, 'zeebe:FormDefinition'));
+        const formDefinition = oldProperties.values.find((value: ModdleElement) => is(value, 'zeebe:FormDefinition'));
 
         const userTaskForm = getUserTaskForm(element, { formKey: formDefinition.get('formKey') });
 
@@ -309,7 +342,7 @@ export default class FormsBehavior extends CommandInterceptor {
      * 1. Remove if embedded form is used.
      * 2. Convert to externalReference if custom form key.
      */
-    this.postExecute('element.updateModdleProperties', ({ element }) => {
+    this.postExecute('element.updateModdleProperties', ({ element }: { element: Element }) => {
 
       if (!is(element, 'bpmn:UserTask') || !hasZeebeUserTask(element)) {
         return;
@@ -339,7 +372,7 @@ export default class FormsBehavior extends CommandInterceptor {
     /**
      * Replace `externalReference` with `formKey` for non-`zeebe:UserTask`.
      */
-    this.postExecute('element.updateModdleProperties', ({ element }) => {
+    this.postExecute('element.updateModdleProperties', ({ element }: { element: Element }) => {
 
       if (!is(element, 'bpmn:UserTask') || hasZeebeUserTask(element)) {
         return;
@@ -372,7 +405,11 @@ FormsBehavior.$inject = [
   'modeling'
 ];
 
-function isExtensionElementRemoved(context, type) {
+function isExtensionElementRemoved(context: {
+  moddleElement: ModdleElement;
+  oldProperties: Record<string, any>;
+  properties: Record<string, any>;
+}, type: string) {
   const {
     moddleElement,
     oldProperties,
@@ -382,10 +419,10 @@ function isExtensionElementRemoved(context, type) {
   return is(moddleElement, 'bpmn:ExtensionElements')
     && 'values' in oldProperties
     && 'values' in properties
-    && oldProperties.values.find(value => is(value, type))
-    && !properties.values.find(value => is(value, type));
+    && oldProperties.values.find((value: ModdleElement) => is(value, type))
+    && !properties.values.find((value: ModdleElement) => is(value, type));
 }
 
-function hasZeebeUserTask(userTask) {
+function hasZeebeUserTask(userTask: Element | ModdleElement) {
   return getExtensionElementsList(userTask, 'zeebe:UserTask').length;
 }

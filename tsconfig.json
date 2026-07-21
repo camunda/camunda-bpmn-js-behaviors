@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "ES2018"
+    ],
+    "target": "ES2018",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "lib/**/*.ts"
+  ]
+}

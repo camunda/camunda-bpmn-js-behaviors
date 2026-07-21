@@ -4,13 +4,22 @@ import CommandInterceptor from 'diagram-js/lib/command/CommandInterceptor';
 import { createElement } from '../util/ElementUtil';
 import { getExtensionElementsList } from '../util/ExtensionElementsUtil';
 
+import type BpmnFactory from 'bpmn-js/lib/features/modeling/BpmnFactory';
+import type Modeling from 'bpmn-js/lib/features/modeling/Modeling';
+
+import type EventBus from 'diagram-js/lib/core/EventBus';
+
+import type { Element, ModdleElement } from 'bpmn-js/lib/model/Types';
+
 const HIGH_PRIORITY = 5000;
 
 /**
  * Zeebe BPMN specific behavior for creating user tasks.
  */
 export default class CreateZeebeUserTaskBehavior extends CommandInterceptor {
-  constructor(bpmnFactory, eventBus, modeling) {
+  static $inject: string[];
+
+  constructor(bpmnFactory: BpmnFactory, eventBus: EventBus, modeling: Modeling) {
     super(eventBus);
 
     /**
@@ -23,7 +32,7 @@ export default class CreateZeebeUserTaskBehavior extends CommandInterceptor {
         const shape = context.shape || context.newShape;
         const explicitlyDisabled = context.hints && context.hints.createElementsBehavior === false;
 
-        if (!is(shape, 'bpmn:UserTask') || explicitlyDisabled) {
+        if (!shape || !is(shape, 'bpmn:UserTask') || explicitlyDisabled) {
           return;
         }
 
@@ -33,6 +42,7 @@ export default class CreateZeebeUserTaskBehavior extends CommandInterceptor {
         }
 
         const businessObject = getBusinessObject(shape);
+
         let extensionElements = businessObject.get('extensionElements');
 
         if (!extensionElements) {
@@ -68,12 +78,8 @@ CreateZeebeUserTaskBehavior.$inject = [ 'bpmnFactory', 'eventBus', 'modeling' ];
 
 /**
  * Get zeebe:userTask extension.
- *
- * @param {djs.model.Base|ModdleElement} element
- *
- * @returns {ModdleElement|null}
  */
-function getZeebeUserTask(element) {
+function getZeebeUserTask(element: Element | ModdleElement) {
   const businessObject = getBusinessObject(element);
   const userTaskElements = getExtensionElementsList(businessObject, 'zeebe:UserTask');
 

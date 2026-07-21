@@ -1,12 +1,17 @@
-import { is } from 'bpmn-js/lib/util/ModelUtil';
-
-import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import {
+  getBusinessObject,
+  is
+} from 'bpmn-js/lib/util/ModelUtil';
 
 import CommandInterceptor from 'diagram-js/lib/command/CommandInterceptor';
 
 import { isUndefined } from 'min-dash';
 
 import { removeExtensionElements } from '../util/ExtensionElementsUtil';
+
+import type CommandStack from 'diagram-js/lib/command/CommandStack';
+
+import type EventBus from 'diagram-js/lib/core/EventBus';
 
 const HIGH_PRIORITY = 5000;
 
@@ -16,10 +21,12 @@ const HIGH_PRIORITY = 5000;
  * zeebe:dueDate and zeebe:followUpDate.
  */
 export default class RemoveTaskScheduleBehavior extends CommandInterceptor {
-  constructor(commandStack, eventBus) {
+  static $inject: string[];
+
+  constructor(commandStack: CommandStack, eventBus: EventBus) {
     super(eventBus);
 
-    this.postExecuted('element.updateModdleProperties' , HIGH_PRIORITY, function(context) {
+    this.postExecuted('element.updateModdleProperties', HIGH_PRIORITY, function(context) {
       const {
         element,
         moddleElement
@@ -37,6 +44,7 @@ export default class RemoveTaskScheduleBehavior extends CommandInterceptor {
           && isUndefined(taskSchedule.get('zeebe:followUpDate'))
       ) {
         const businessObject = getBusinessObject(element);
+
 
         removeExtensionElements(element, businessObject, taskSchedule, commandStack);
       }
