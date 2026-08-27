@@ -63,7 +63,7 @@
     "sinon": "^22.0.0",
     "sinon-chai": "^4.0.0",
     "webpack": "^5.101.2",
-    "zeebe-bpmn-moddle": "^1.15.0"
+    "zeebe-bpmn-moddle": "^2.0.0"
   },
   "peerDependencies": {
     "bpmn-js": ">= 9",
