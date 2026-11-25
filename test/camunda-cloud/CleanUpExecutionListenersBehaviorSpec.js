@@ -1,7 +1,10 @@
 import { expect } from 'chai';
 
+import { without } from 'min-dash';
+
 import {
   bootstrapCamundaCloudModeler,
+  getBpmnJS,
   inject
 } from 'test/TestHelper';
 
@@ -206,6 +209,88 @@ describe('camunda-cloud/features/modeling - CleanUpExecutionListenersBehavior', 
 
       expect(extensionElements.get('values')).to.have.lengthOf(1);
     }));
+
+
+    describe('update listeners of removed zeebe:ExecutionListeners', function() {
+
+      it('should execute', inject(function(elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('SingleListener');
+        const listenersContainer = getExecutionListenersContainer(el);
+
+        removeContainer(el, listenersContainer);
+
+        // when
+        modeling.updateModdleProperties(el, listenersContainer, { listeners: [] });
+
+        // then
+        const values = getBusinessObject(el).get('extensionElements').get('values');
+
+        expect(values).to.have.lengthOf(1);
+        expect(values[0].$type).to.eql('zeebe:Properties');
+      }));
+
+
+      it('should undo', inject(function(commandStack, elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('SingleListener');
+        const listenersContainer = getExecutionListenersContainer(el);
+
+        removeContainer(el, listenersContainer);
+
+        modeling.updateModdleProperties(el, listenersContainer, { listeners: [] });
+
+        // when
+        commandStack.undo();
+        commandStack.undo();
+
+        // then
+        const values = getBusinessObject(el).get('extensionElements').get('values');
+
+        expect(values).to.have.lengthOf(2);
+        expect(getExecutionListenersContainer(el)).to.equal(listenersContainer);
+        expect(listenersContainer.get('listeners')).to.have.lengthOf(1);
+      }));
+
+
+      it('should redo', inject(function(commandStack, elementRegistry, modeling) {
+
+        // given
+        const el = elementRegistry.get('SingleListener');
+        const listenersContainer = getExecutionListenersContainer(el);
+
+        removeContainer(el, listenersContainer);
+
+        modeling.updateModdleProperties(el, listenersContainer, { listeners: [] });
+
+        // when
+        commandStack.undo();
+        commandStack.undo();
+        commandStack.redo();
+        commandStack.redo();
+
+        // then
+        const values = getBusinessObject(el).get('extensionElements').get('values');
+
+        expect(values).to.have.lengthOf(1);
+        expect(values[0].$type).to.eql('zeebe:Properties');
+        expect(listenersContainer.get('listeners')).to.be.empty;
+      }));
+
+
+      function removeContainer(element, container) {
+        getBpmnJS().invoke(function(modeling) {
+          const extensionElements = getBusinessObject(element).get('extensionElements');
+
+          modeling.updateModdleProperties(element, extensionElements, {
+            values: without(extensionElements.get('values'), container)
+          });
+        });
+      }
+
+    });
   });
 
 

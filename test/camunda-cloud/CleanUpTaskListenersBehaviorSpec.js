@@ -151,6 +151,60 @@ describe('camunda-cloud/features/modeling - CleanUpTaskListenersBehavior', funct
     }));
 
 
+    describe('update listeners of non-zeebe user task', function() {
+
+      it('should execute', inject(function(elementRegistry) {
+
+        // given
+        const el = elementRegistry.get('NonZeebeUserTask');
+
+        // when
+        addListener(el);
+
+        // then
+        expect(getTaskListenersContainer(el)).not.to.exist;
+        expect(getExtensionElements(el).get('values')).to.be.empty;
+      }));
+
+
+      it('should undo', inject(function(commandStack, elementRegistry) {
+
+        // given
+        const el = elementRegistry.get('NonZeebeUserTask');
+
+        addListener(el);
+
+        // when
+        commandStack.undo();
+
+        // then
+        const taskListenersContainer = getTaskListenersContainer(el);
+
+        expect(taskListenersContainer).to.exist;
+        expect(taskListenersContainer.get('listeners')).to.have.lengthOf(1);
+        expect(taskListenersContainer.get('listeners')[0].get('type')).to.eql('complete_listener');
+      }));
+
+
+      it('should redo', inject(function(commandStack, elementRegistry) {
+
+        // given
+        const el = elementRegistry.get('NonZeebeUserTask');
+
+        addListener(el);
+
+        // when
+        commandStack.undo();
+        commandStack.redo();
+
+        // then
+        expect(getTaskListenersContainer(el)).not.to.exist;
+        expect(getExtensionElements(el).get('values')).to.be.empty;
+      }));
+
+    });
+
+
     it('should NOT remove task listeners of unknown event type', inject(function(elementRegistry, modeling) {
 
       // given
@@ -185,6 +239,21 @@ function getTaskListenersContainer(element) {
 
 function removeZeebeUserTask(extensionElements) {
   return extensionElements.get('values').filter(extensionElement => !is(extensionElement, 'zeebe:UserTask'));
+}
+
+function addListener(element) {
+  getBpmnJS().invoke(function(bpmnFactory, modeling) {
+    const taskListenersContainer = getTaskListenersContainer(element);
+
+    const listener = bpmnFactory.create('zeebe:TaskListener', {
+      eventType: 'assignment',
+      type: 'assign_listener'
+    });
+
+    modeling.updateModdleProperties(element, taskListenersContainer, {
+      listeners: [ ...taskListenersContainer.get('listeners'), listener ]
+    });
+  });
 }
 
 function addFormDefinition(element) {
